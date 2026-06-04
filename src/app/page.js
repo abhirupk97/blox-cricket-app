@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { client } from '../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import DevPopup from './DevPopup'; // <-- Add this line right here!
-
+export const revalidate = 0;
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
   return builder.image(source);
