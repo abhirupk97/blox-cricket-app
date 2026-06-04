@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import { client } from '../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
-import DevPopup from './DevPopup'; // <-- Add this line right here!
-export const revalidate = 0;
+import DevPopup from './DevPopup'; 
+
+export const revalidate = 0; // Ensures the site always gets fresh data!
+
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
   return builder.image(source);
@@ -10,8 +12,14 @@ function urlFor(source) {
 
 export default async function Home() {
   
+  // Fetch BOTH Game Updates AND Homepage settings (including the video URL!)
   const updates = await client.fetch(`*[_type == "gameUpdate"] | order(date desc)`);
-  const homepage = await client.fetch(`*[_type == "homepage"][0]`);
+  
+  // This tells Sanity to go find the actual link to the video file asset.
+  const homepage = await client.fetch(`*[_type == "homepage"][0]{
+    ..., 
+    "bgVideoUrl": bgVideo.asset->url 
+  }`);
 
   return (
     <>
@@ -20,21 +28,48 @@ export default async function Home() {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </Head>
 
-      {homepage?.bgImage && (
-        <div style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          backgroundImage: `url(${urlFor(homepage.bgImage).url()})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          zIndex: -2
-        }}></div>
+      {/* --- DYNAMIC BACKGROUND CONTROLLER --- */}
+      {/* 1. Video Background (Priority) */}
+      {homepage?.bgVideoUrl ? (
+        <video 
+          autoPlay 
+          muted 
+          loop 
+          playsInline 
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100vh',
+            objectFit: 'cover', // Ensures the video fills the screen neatly
+            zIndex: -2,
+            background: '#0a0a0a' // Fallback color
+          }}
+        >
+          <source src={homepage.bgVideoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      ) : (
+        /* 2. Image Background (Fallback if no video exists) */
+        homepage?.bgImage && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100vh',
+            backgroundImage: `url(${urlFor(homepage.bgImage).url()})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -2,
+            background: '#0a0a0a' // Fallback color
+          }}></div>
+        )
       )}
 
+      {/* Dark Overlay so text is readable over the video/image */}
       <div className="bg-overlay"></div>
 
       {/* Navigation Bar */}
@@ -58,6 +93,7 @@ export default async function Home() {
         </div>
       </nav>
 
+      {/* Main Content Canvas */}
       <main className="dashboard-container">
         
         {/* HERO SECTION */}
@@ -76,7 +112,6 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ABOUT DEV SECTION */}
         {/* ABOUT DEV SECTION */}
         <section id="about-dev" className="content-section glass-container">
           <h2>About Dev</h2>

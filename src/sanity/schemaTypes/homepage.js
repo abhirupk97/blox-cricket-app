@@ -9,6 +9,14 @@ export default {
       type: 'string',
     },
     {
+      name: 'bgVideo',
+      title: 'Website Background Video',
+      type: 'file', // Type 'file' handles non-image assets like videos/PDFs
+      options: {
+        accept: 'video/mp4, video/webm, video/quicktime', // Restrict it to standard formats
+      },
+    },
+    {
       name: 'bgImage',
       title: 'Website Background Image',
       type: 'image',
