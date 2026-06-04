@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { client } from '../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import DevPopup from './DevPopup'; 
-
+import UpdatePopup from './UpdatePopup'; // <-- Add this new line!
 export const revalidate = 0; // Ensures the site always gets fresh data!
 
 const builder = imageUrlBuilder(client);
@@ -156,9 +156,7 @@ export default async function Home() {
               </li>
             ))}
           </ul>
-          <div className="click-more-container">
-            <a href="#" className="click-more">Click More &rarr;</a>
-          </div>
+          <UpdatePopup updates={updates} />
         </section>
 
         {/* MEDIA SECTION */}
