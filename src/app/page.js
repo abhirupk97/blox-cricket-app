@@ -2,9 +2,13 @@ import Head from 'next/head';
 import { client } from '../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
 import DevPopup from './DevPopup'; 
-import UpdatePopup from './UpdatePopup'; // <-- Add this new line!
-export const revalidate = 0; // Ensures the site always gets fresh data!
+import UpdatePopup from './UpdatePopup';
+export const revalidate = 0; 
 import RevealOnScroll from './RevealOnScroll';
+import HeroTypewriter from './HeroTypewriter';
+import MediaGalleryPopup from './MediaGalleryPopup';
+import FireflyBackground from './FireflyBackground';
+
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
   return builder.image(source);
@@ -12,10 +16,7 @@ function urlFor(source) {
 
 export default async function Home() {
   
-  // Fetch BOTH Game Updates AND Homepage settings (including the video URL!)
   const updates = await client.fetch(`*[_type == "gameUpdate"] | order(date desc)`);
-  
-  // This tells Sanity to go find the actual link to the video file asset.
   const homepage = await client.fetch(`*[_type == "homepage"][0]{
     ..., 
     "bgVideoUrl": bgVideo.asset->url 
@@ -29,7 +30,6 @@ export default async function Home() {
       </Head>
 
       {/* --- DYNAMIC BACKGROUND CONTROLLER --- */}
-      {/* 1. Video Background (Priority) */}
       {homepage?.bgVideoUrl ? (
         <video 
           autoPlay 
@@ -42,16 +42,15 @@ export default async function Home() {
             left: 0,
             width: '100%',
             height: '100vh',
-            objectFit: 'cover', // Ensures the video fills the screen neatly
+            objectFit: 'cover',
             zIndex: -2,
-            background: '#0a0a0a' // Fallback color
+            background: '#0a0a0a'
           }}
         >
           <source src={homepage.bgVideoUrl} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       ) : (
-        /* 2. Image Background (Fallback if no video exists) */
         homepage?.bgImage && (
           <div style={{
             position: 'fixed',
@@ -64,12 +63,12 @@ export default async function Home() {
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
             zIndex: -2,
-            background: '#0a0a0a' // Fallback color
+            background: '#0a0a0a'
           }}></div>
         )
       )}
 
-      {/* Dark Overlay so text is readable over the video/image */}
+      {/* Dark Overlay */}
       <div className="bg-overlay"></div>
 
       {/* Navigation Bar */}
@@ -88,7 +87,6 @@ export default async function Home() {
           <li><a href="#media" className="scroll-link"><i className="fa-solid fa-video"></i> Media</a></li>
         </ul>
         <div className="profile-menu">
-          
           <span>{homepage?.playerName || 'BloxPlayer'} <i className="fa-solid fa-chevron-down"></i></span>
         </div>
       </nav>
@@ -96,10 +94,13 @@ export default async function Home() {
       {/* Main Content Canvas */}
       <main className="dashboard-container">
         
+        {/* --- THE NEON FIREFLIES --- */}
+        <FireflyBackground />
+
         {/* HERO SECTION */}
         <section className="hero-section">
           <div className="main-content">
-            <h1 className="mega-title">{homepage?.heroTitle || 'BLOX CRICKET'}</h1>
+            <HeroTypewriter title={homepage?.heroTitle} />
             <p className="hero-lines">
               {homepage?.heroText || 'Step onto the pitch and experience the ultimate T20 multiplayer cricket showdown.'}
             </p>
@@ -112,17 +113,14 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ABOUT DEV SECTION */}
+        {/* 1. ABOUT DEV SECTION */}
         <RevealOnScroll id="about-dev" className="content-section glass-container">
           <h2>About Dev</h2>
           <p className="section-lines">"{homepage?.aboutDevText || 'Meet the passionate developers behind Blox Cricket.'}"</p>
-          
-          {/* This is your new interactive Popup Component! */}
           <DevPopup developers={homepage?.devNames} />
-          
         </RevealOnScroll>
 
-        {/* ABOUT GAME SECTION */}
+        {/* 2. ABOUT GAME SECTION */}
         <RevealOnScroll id="about-game" className="content-section glass-container">
           <h2>About Game</h2>
           <p className="section-lines">"{homepage?.aboutGameText || 'Experience next-generation multiplayer action.'}"</p>
@@ -136,9 +134,11 @@ export default async function Home() {
           ) : (
             <div className="media-box placeholder-box">PICTURE OR VIDEO</div>
           )}
+          
+          <MediaGalleryPopup title="Game Screenshots" buttonText="View Screenshots &rarr;" />
         </RevealOnScroll>
 
-        {/* GAME UPDATES SECTION */}
+        {/* 3. GAME UPDATES SECTION */}
         <RevealOnScroll id="game-updates" className="content-section glass-container">
           <h2>Game Update</h2>
           <ul className="update-list-numbered">
@@ -159,7 +159,7 @@ export default async function Home() {
           <UpdatePopup updates={updates} />
         </RevealOnScroll>
 
-        {/* MEDIA SECTION */}
+        {/* 4. MEDIA SECTION */}
         <RevealOnScroll id="media" className="content-section glass-container">
           <h2>Game Pic's / Video</h2>
           <p className="section-lines">"{homepage?.mediaText || 'Check out the latest gameplay highlights.'}"</p>
@@ -173,6 +173,8 @@ export default async function Home() {
           ) : (
             <div className="media-box large-media-box">PICTURE / VIDEO</div>
           )}
+
+          <MediaGalleryPopup title="Videos & Media" buttonText="View Full Gallery &rarr;" />
         </RevealOnScroll>
         
       </main>

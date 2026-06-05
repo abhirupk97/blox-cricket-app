@@ -1,7 +1,7 @@
 "use client";
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
-
+import confetti from 'canvas-confetti';
 export default function UpdatePopup({ updates }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -17,9 +17,18 @@ export default function UpdatePopup({ updates }) {
         <button 
           className="click-more" 
           onClick={(e) => {
-            e.preventDefault(); 
-            setIsOpen(true);
-          }}
+  e.preventDefault(); 
+  
+  // THE CONFETTI BLAST
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.6 },
+    colors: ['#39FF14', '#ffffff', '#000000'] // Matches your brand colors!
+  });
+
+  setIsOpen(true);
+}}
           style={{ 
             background: 'none', 
             border: 'none', 
