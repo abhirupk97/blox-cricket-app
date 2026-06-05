@@ -4,7 +4,7 @@ import imageUrlBuilder from '@sanity/image-url';
 import DevPopup from './DevPopup'; 
 import UpdatePopup from './UpdatePopup'; // <-- Add this new line!
 export const revalidate = 0; // Ensures the site always gets fresh data!
-
+import RevealOnScroll from './RevealOnScroll';
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
   return builder.image(source);
@@ -88,7 +88,7 @@ export default async function Home() {
           <li><a href="#media" className="scroll-link"><i className="fa-solid fa-video"></i> Media</a></li>
         </ul>
         <div className="profile-menu">
-          <img src="https://ui-avatars.com/api/?name=Blox+Player&background=222&color=7CFC00" alt="Profile" className="avatar" />
+          
           <span>{homepage?.playerName || 'BloxPlayer'} <i className="fa-solid fa-chevron-down"></i></span>
         </div>
       </nav>
@@ -113,17 +113,17 @@ export default async function Home() {
         </section>
 
         {/* ABOUT DEV SECTION */}
-        <section id="about-dev" className="content-section glass-container">
+        <RevealOnScroll id="about-dev" className="content-section glass-container">
           <h2>About Dev</h2>
           <p className="section-lines">"{homepage?.aboutDevText || 'Meet the passionate developers behind Blox Cricket.'}"</p>
           
           {/* This is your new interactive Popup Component! */}
           <DevPopup developers={homepage?.devNames} />
           
-        </section>
+        </RevealOnScroll>
 
         {/* ABOUT GAME SECTION */}
-        <section id="about-game" className="content-section glass-container">
+        <RevealOnScroll id="about-game" className="content-section glass-container">
           <h2>About Game</h2>
           <p className="section-lines">"{homepage?.aboutGameText || 'Experience next-generation multiplayer action.'}"</p>
           
@@ -136,10 +136,10 @@ export default async function Home() {
           ) : (
             <div className="media-box placeholder-box">PICTURE OR VIDEO</div>
           )}
-        </section>
+        </RevealOnScroll>
 
         {/* GAME UPDATES SECTION */}
-        <section id="game-updates" className="content-section glass-container">
+        <RevealOnScroll id="game-updates" className="content-section glass-container">
           <h2>Game Update</h2>
           <ul className="update-list-numbered">
             {updates.length === 0 && (
@@ -157,10 +157,10 @@ export default async function Home() {
             ))}
           </ul>
           <UpdatePopup updates={updates} />
-        </section>
+        </RevealOnScroll>
 
         {/* MEDIA SECTION */}
-        <section id="media" className="content-section glass-container">
+        <RevealOnScroll id="media" className="content-section glass-container">
           <h2>Game Pic's / Video</h2>
           <p className="section-lines">"{homepage?.mediaText || 'Check out the latest gameplay highlights.'}"</p>
           
@@ -173,7 +173,7 @@ export default async function Home() {
           ) : (
             <div className="media-box large-media-box">PICTURE / VIDEO</div>
           )}
-        </section>
+        </RevealOnScroll>
         
       </main>
     </>
