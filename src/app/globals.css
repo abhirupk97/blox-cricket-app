@@ -385,12 +385,39 @@ p, .hero-lines, .section-lines, .box-lines {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* --- SCROLL REVEAL ANIMATION --- */
+/* --- ADVANCED SCROLL REVEAL ANIMATIONS --- */
 .reveal-wrapper {
   opacity: 0;
-  transform: translateY(50px);
+  /* We removed the default transform here so we can control it individually below! */
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  /* Make sure 'will-change' is deleted if it was here previously! */
+}
+
+/* STYLE 1: The Classic Slide Up */
+.reveal-slide-up {
+  transform: translateY(50px);
+}
+.reveal-slide-up.is-visible {
+  opacity: 1;
+  transform: none !important;
+}
+
+/* STYLE 2: The 3D Hinge/Rotate (Puzzling up) */
+.reveal-rotate {
+  transform: perspective(1000px) rotateX(-20deg) translateY(60px);
+  transform-origin: bottom center;
+}
+.reveal-rotate.is-visible {
+  opacity: 1;
+  transform: perspective(1000px) rotateX(0deg) translateY(0) !important;
+}
+
+/* STYLE 3: The Scale & Pop */
+.reveal-scale {
+  transform: scale(0.85) translateY(40px);
+}
+.reveal-scale.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0) !important;
 }
 
 .reveal-wrapper.is-visible {

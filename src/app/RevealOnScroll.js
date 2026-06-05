@@ -1,32 +1,37 @@
 "use client";
+import { useEffect, useRef, useState } from "react";
 
-import { useEffect, useRef } from 'react';
-
-export default function RevealOnScroll({ children, id, className }) {
-  const domRef = useRef();
+// We added 'animationType' so you can choose: "slide-up", "rotate", or "scale"
+export default function RevealOnScroll({ children, id, className, animationType = "slide-up" }) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
 
   useEffect(() => {
-    // Set up the Intersection Observer (The Scroll Watcher)
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        // If the section enters the screen, add the 'is-visible' class
+    const currentRef = ref.current;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
+          setIsVisible(true);
+          observer.unobserve(currentRef);
         }
-      });
-    }, { 
-      threshold: 0.15 // Triggers when exactly 15% of the section becomes visible
-    });
+      },
+      { threshold: 0.15 } // Triggers when 15% of the card is visible
+    );
 
-    if (domRef.current) observer.observe(domRef.current);
-    
-    // Cleanup function
-    return () => observer.disconnect();
+    if (currentRef) observer.observe(currentRef);
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
   }, []);
 
+  // Notice how it dynamically applies your chosen animation class!
   return (
-    <section id={id} className={`reveal-wrapper ${className || ''}`} ref={domRef}>
+    <div
+      id={id}
+      ref={ref}
+      className={`reveal-wrapper reveal-${animationType} ${className || ""} ${isVisible ? "is-visible" : ""}`}
+    >
       {children}
-    </section>
+    </div>
   );
 }

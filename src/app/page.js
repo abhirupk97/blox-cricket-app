@@ -121,15 +121,15 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* 1. ABOUT DEV SECTION */}
-        <RevealOnScroll id="about-dev" className="content-section glass-container">
+        {/* 1. ABOUT DEV SECTION - Now uses 3D Rotate! */}
+        <RevealOnScroll id="about-dev" className="content-section glass-container" animationType="rotate">
           <h2>About Dev</h2>
           <p className="section-lines">"{homepage?.aboutDevText || 'Meet the passionate developers behind Blox Cricket.'}"</p>
           <DevPopup developers={homepage?.devNames} />
         </RevealOnScroll>
 
-        {/* 2. ABOUT GAME SECTION */}
-        <RevealOnScroll id="about-game" className="content-section glass-container">
+        {/* 2. ABOUT GAME SECTION - Now uses Scale & Pop! */}
+        <RevealOnScroll id="about-game" className="content-section glass-container" animationType="scale">
           <h2>About Game</h2>
           <p className="section-lines">"{homepage?.aboutGameText || 'Experience next-generation multiplayer action.'}"</p>
           
@@ -146,8 +146,8 @@ export default async function Home() {
           <MediaGalleryPopup title="Game Screenshots" buttonText="View Screenshots &rarr;" />
         </RevealOnScroll>
 
-        {/* 3. GAME UPDATES SECTION */}
-        <RevealOnScroll id="game-updates" className="content-section glass-container">
+        {/* 3. GAME UPDATES SECTION - Uses classic Slide Up */}
+        <RevealOnScroll id="game-updates" className="content-section glass-container" animationType="slide-up">
           <h2>Game Update</h2>
           <ul className="update-list-numbered">
             {updates.length === 0 && (
@@ -167,8 +167,8 @@ export default async function Home() {
           <UpdatePopup updates={updates} />
         </RevealOnScroll>
 
-        {/* 4. MEDIA SECTION */}
-        <RevealOnScroll id="media" className="content-section glass-container">
+        {/* 4. MEDIA SECTION - Now uses 3D Rotate! */}
+        <RevealOnScroll id="media" className="content-section glass-container" animationType="rotate">
           <h2>Game Pic's / Video</h2>
           <p className="section-lines">"{homepage?.mediaText || 'Check out the latest gameplay highlights.'}"</p>
           
