@@ -20,7 +20,7 @@ export default function MediaGalleryPopup({ title, buttonText }) {
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 },
-      colors: ['#39FF14', '#ffffff', '#000000'] 
+      colors: ['#4FC3F7', '#7C4DFF', '#ffffff'] 
     });
 
     setIsOpen(true);

@@ -37,7 +37,7 @@ export default function CursorTrail() {
         const p = particles[i];
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(57, 255, 20, ${p.life})`; // Fading Neon Green
+        ctx.fillStyle = `rgba(79, 195, 247, ${p.life})`; // Fading Neon Green
         ctx.fill();
 
         // Make the trail shrink and fade out rapidly

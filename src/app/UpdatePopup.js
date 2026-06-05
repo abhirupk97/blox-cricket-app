@@ -8,7 +8,6 @@ export default function UpdatePopup({ updates }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
-  // This ensures the portal only tries to open on the actual web browser (client)
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -17,7 +16,7 @@ export default function UpdatePopup({ updates }) {
     e.preventDefault(); 
     
     try {
-      // PLAN A: The AAA Emoji Sixer Blast! (Requires newer canvas-confetti)
+      // PLAN A: The AAA Emoji Sixer Blast!
       const bat = confetti.shapeFromText({ text: '🏏', scalar: 3 });
       const ball = confetti.shapeFromText({ text: '⚾', scalar: 3 });
       const trophy = confetti.shapeFromText({ text: '🏆', scalar: 4 });
@@ -31,20 +30,20 @@ export default function UpdatePopup({ updates }) {
         gravity: 0.8
       });
 
-      // Add standard green neon sparks behind the emojis
+      // Sky Blue, Purple, and White Sparks
       confetti({
         particleCount: 50,
         spread: 100,
         origin: { y: 0.6 },
-        colors: ['#39FF14', '#ffffff', '#FFD700'] // Green, White, Gold
+        colors: ['#4FC3F7', '#7C4DFF', '#ffffff'] 
       });
     } catch (error) {
-      // PLAN B: Fallback if shapeFromText isn't supported by the current version
+      // PLAN B: Fallback Blast
       confetti({
         particleCount: 150,
         spread: 90,
         origin: { y: 0.6 },
-        colors: ['#39FF14', '#ffffff', '#000000', '#FFD700']
+        colors: ['#4FC3F7', '#7C4DFF', '#ffffff', '#060B18']
       });
     }
 
@@ -71,7 +70,6 @@ export default function UpdatePopup({ updates }) {
         </MagneticButton>
       </div>
 
-      {/* --- THE FULL UPDATES POPUP MODAL (NOW TELEPORTED via PORTAL) --- */}
       {isOpen && mounted && createPortal(
         <div className="modal-backdrop" onClick={() => setIsOpen(false)}>
           <div 
@@ -87,7 +85,7 @@ export default function UpdatePopup({ updates }) {
             <ul className="update-list-numbered" style={{ paddingLeft: '1rem' }}>
               {updates && updates.length > 0 ? (
                 updates.map((update) => (
-                  <li key={update._id} className="glitch-hover" style={{ marginBottom: '1rem', borderBottom: '1px solid #333', paddingBottom: '1rem' }}>
+                  <li key={update._id} className="glitch-hover" style={{ marginBottom: '1rem', borderBottom: '1px solid rgba(79, 195, 247, 0.2)', paddingBottom: '1rem' }}>
                     <div style={{ fontSize: '1.2rem', color: 'var(--neon-green)', marginBottom: '0.5rem' }}>
                       <strong>{update.version}</strong>
                       <span style={{ color: "#888", marginLeft: "10px", fontSize: "0.9rem" }}>

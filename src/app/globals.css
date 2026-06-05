@@ -1,20 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-/* 1. RESTORE NEON GREEN VARIABLES */
+/* 1. BLUE STADIUM NIGHT VARIABLES */
 :root {
-  --neon-green: #39FF14; /* Your signature bright neon green */
-  --bg-dark: #0a0a0a;
+  --neon-green: #4FC3F7; /* Variable kept for compatibility, but it is now SKY BLUE! */
+  --bg-dark: #060B18;    /* Midnight Navy */
   --text-main: #ffffff;
 }
-/* --- CUSTOM NEON GREEN BALL CURSOR --- */
+
+/* --- CUSTOM SKY BLUE BALL CURSOR --- */
 body, html {
-  /* Draws a perfect 24x24 neon green circle. '12 12' centers the click exactly in the middle */
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2339FF14"/></svg>') 12 12, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%234FC3F7"/></svg>') 12 12, auto;
 }
 
-/* Ensure buttons and links keep the green ball when hovering */
+/* Ensure buttons and links keep the blue ball when hovering */
 a, button, .click-more, .profile-menu, .close-btn {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2339FF14"/></svg>') 12 12, pointer !important;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%234FC3F7"/></svg>') 12 12, pointer !important;
 }
 
 /* Forces the particles to stay in the background and not block your clicks */
@@ -27,6 +27,7 @@ a, button, .click-more, .profile-menu, .close-btn {
   z-index: 0; 
   pointer-events: none; 
 }
+
 /* 2. CORE HTML & BODY RESET */
 html {
   scroll-behavior: smooth;
@@ -41,6 +42,7 @@ html {
 body {
   font-family: 'Inter', sans-serif;
   color: var(--text-main);
+  background-color: var(--bg-dark);
   background-size: cover;
   min-height: 100vh;
   display: flex;
@@ -49,19 +51,19 @@ body {
 
 /* 3. RESTORE THE VISIBLE GLASS BOXES */
 .glass-container {
-  background: rgba(20, 20, 20, 0.7); /* Dark semi-transparent background */
+  background: rgba(79, 195, 247, 0.08); /* New Blue Stadium transparent background */
   backdrop-filter: blur(12px); /* The frosted glass blur */
-  border: 1px solid rgba(57, 255, 20, 0.3); /* The glowing green border! */
+  border: 1px solid rgba(79, 195, 247, 0.3); /* The glowing blue border! */
   border-radius: 12px;
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
   padding: 2rem;
 }
 
-/* Smooth grey gradient overlay */
+/* Smooth stadium night gradient overlay */
 .bg-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at center, rgba(80,80,80,0.4) 0%, rgba(20,20,20,0.95) 80%);
+  background: radial-gradient(circle at center, rgba(79,195,247,0.1) 0%, #060B18 80%);
   z-index: -1;
 }
 
@@ -77,8 +79,8 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 15px 5%;
-  background: rgba(20, 20, 20, 0.95);
-  border-bottom: 1px solid #3a3a3a;
+  background: rgba(6, 11, 24, 0.95);
+  border-bottom: 1px solid rgba(79, 195, 247, 0.2);
   z-index: 100;
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
@@ -166,7 +168,7 @@ body {
   font-size: 5rem; 
   font-weight: 900;
   text-transform: uppercase;
-  text-shadow: 0 0 20px rgba(124, 252, 0, 0.4); 
+  text-shadow: 0 0 20px rgba(79, 195, 247, 0.4); 
 }
 
 /* Styled Box placed at the bottom right */
@@ -174,13 +176,13 @@ body {
   align-self: flex-end; 
   width: 100%;
   max-width: 400px;
-  background: rgba(30, 30, 30, 0.6);
+  background: rgba(79, 195, 247, 0.05);
   backdrop-filter: blur(8px);
   border: 2px solid var(--neon-green);
   border-radius: 12px;
   padding: 25px;
   margin-top: auto; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(124, 252, 0, 0.1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(79, 195, 247, 0.1);
 }
 
 /* Responsive adjustments for smaller screens */
@@ -193,7 +195,7 @@ body {
 /* --- Content Sections --- */
 .content-section {
   scroll-margin-top: 100px; 
-  margin-bottom: 3rem; /* Creates a clean gap between sections */
+  margin-bottom: 3rem; 
 }
 
 h2, .content-section h2 {
@@ -240,8 +242,8 @@ p, .hero-lines, .section-lines, .box-lines {
 }
 
 .dev-card {
-  background: rgba(0, 0, 0, 0.6);
-  border: 1px solid #444;
+  background: rgba(6, 11, 24, 0.6);
+  border: 1px solid rgba(79, 195, 247, 0.3);
   border-radius: 8px;
   padding: 50px 20px;
   text-align: center;
@@ -258,8 +260,8 @@ p, .hero-lines, .section-lines, .box-lines {
 
 /* Picture / Video Boxes */
 .media-box {
-  background: rgba(0, 0, 0, 0.6);
-  border: 2px dashed #555;
+  background: rgba(6, 11, 24, 0.6);
+  border: 2px dashed rgba(79, 195, 247, 0.5);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -301,7 +303,7 @@ p, .hero-lines, .section-lines, .box-lines {
 .update-list-numbered li::before {
   content: counter(custom-counter);
   background: var(--neon-green);
-  color: #000;
+  color: #060B18;
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -342,7 +344,7 @@ p, .hero-lines, .section-lines, .box-lines {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(6, 11, 24, 0.8);
   backdrop-filter: blur(8px);
   display: flex;
   justify-content: center;
@@ -352,14 +354,14 @@ p, .hero-lines, .section-lines, .box-lines {
 
 .modal-content {
   position: relative;
-  background: rgba(15, 15, 15, 0.95);
+  background: rgba(6, 11, 24, 0.95);
   padding: 3rem 2rem;
   border-radius: 12px;
   max-width: 500px;
   width: 90%;
   text-align: center;
   border: 1px solid var(--neon-green);
-  box-shadow: 0 0 30px rgba(124, 252, 0, 0.15);
+  box-shadow: 0 0 30px rgba(79, 195, 247, 0.15);
   animation: popIn 0.3s ease-out forwards;
 }
 
@@ -388,53 +390,38 @@ p, .hero-lines, .section-lines, .box-lines {
 /* --- ADVANCED SCROLL REVEAL ANIMATIONS --- */
 .reveal-wrapper {
   opacity: 0;
-  /* We removed the default transform here so we can control it individually below! */
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* STYLE 1: The Classic Slide Up */
-.reveal-slide-up {
-  transform: translateY(50px);
-}
-.reveal-slide-up.is-visible {
-  opacity: 1;
-  transform: none !important;
-}
+.reveal-slide-up { transform: translateY(50px); }
+.reveal-slide-up.is-visible { opacity: 1; transform: none !important; }
 
-/* STYLE 2: The 3D Hinge/Rotate (Puzzling up) */
 .reveal-rotate {
   transform: perspective(1000px) rotateX(-20deg) translateY(60px);
   transform-origin: bottom center;
 }
-.reveal-rotate.is-visible {
-  opacity: 1;
-  transform: perspective(1000px) rotateX(0deg) translateY(0) !important;
-}
+.reveal-rotate.is-visible { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) !important; }
 
-/* STYLE 3: The Scale & Pop */
-.reveal-scale {
-  transform: scale(0.85) translateY(40px);
-}
-.reveal-scale.is-visible {
-  opacity: 1;
-  transform: scale(1) translateY(0) !important;
-}
+.reveal-scale { transform: scale(0.85) translateY(40px); }
+.reveal-scale.is-visible { opacity: 1; transform: scale(1) translateY(0) !important; }
 
 .reveal-wrapper.is-visible {
   opacity: 1;
-  transform: none !important; /* MAGIC FIX: 'none' destroys the CSS cage and frees the popup! */
+  transform: none !important;
 }
+
 /* --- PRELOADER SPIN ANIMATION --- */
 @keyframes spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
 /* --- MAGNETIC SPOTLIGHT BUTTON --- */
 .magnetic-btn {
   position: relative;
   background: transparent;
   color: var(--neon-green);
-  border: 1px solid rgba(57, 255, 20, 0.3);
+  border: 1px solid rgba(79, 195, 247, 0.3);
   padding: 12px 24px;
   border-radius: 8px;
   font-family: inherit;
@@ -442,7 +429,6 @@ p, .hero-lines, .section-lines, .box-lines {
   overflow: hidden;
 }
 
-/* The sweeping spotlight effect */
 .magnetic-btn::before {
   content: '';
   position: absolute;
@@ -450,27 +436,27 @@ p, .hero-lines, .section-lines, .box-lines {
   left: -100%;
   width: 50%; 
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(79, 195, 247, 0.4), transparent);
   transition: left 0.5s ease;
 }
 
 .magnetic-btn:hover {
   border-color: var(--neon-green);
-  box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+  box-shadow: 0 0 15px rgba(79, 195, 247, 0.2);
 }
 
 .magnetic-btn:hover::before {
   left: 100%;
 }
+
 /* --- CYBER GLITCH HOVER EFFECT --- */
 .glitch-hover {
   position: relative;
   display: inline-block;
   transition: all 0.2s ease;
-  cursor: crosshair; /* Adds a cool hacking cursor when hovering text! */
+  cursor: crosshair; 
 }
 
-/* This allows paragraphs and lists to glitch without breaking their layout */
 p.glitch-hover, li.glitch-hover, div.glitch-hover {
   display: block; 
 }
@@ -478,7 +464,8 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover {
 .glitch-hover:hover {
   animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
   color: var(--neon-green) !important;
-  text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9;
+  /* Swapped to Purple and Sky Blue! */
+  text-shadow: -2px 0 #7C4DFF, 2px 0 #4FC3F7; 
 }
 
 @keyframes glitch-skew {
@@ -489,18 +476,19 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover {
   80% { transform: skew(5deg); }
   100% { transform: skew(0deg); }
 }
+
 /* --- CYBER NEON SCROLLBAR --- */
 ::-webkit-scrollbar {
-  width: 8px; /* Slim and sleek */
+  width: 8px; 
 }
 ::-webkit-scrollbar-track {
-  background: #050505; /* Pitch black track */
+  background: var(--bg-dark); 
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(57, 255, 20, 0.4); /* Faded neon green */
+  background: rgba(79, 195, 247, 0.4); 
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(57, 255, 20, 1); /* Full brightness on hover */
-  box-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+  background: rgba(79, 195, 247, 1); 
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.8);
 }
