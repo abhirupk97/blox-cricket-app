@@ -462,3 +462,45 @@ p, .hero-lines, .section-lines, .box-lines {
 .magnetic-btn:hover::before {
   left: 100%;
 }
+/* --- CYBER GLITCH HOVER EFFECT --- */
+.glitch-hover {
+  position: relative;
+  display: inline-block;
+  transition: all 0.2s ease;
+  cursor: crosshair; /* Adds a cool hacking cursor when hovering text! */
+}
+
+/* This allows paragraphs and lists to glitch without breaking their layout */
+p.glitch-hover, li.glitch-hover, div.glitch-hover {
+  display: block; 
+}
+
+.glitch-hover:hover {
+  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  color: var(--neon-green) !important;
+  text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9;
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-10deg); }
+  40% { transform: skew(10deg); }
+  60% { transform: skew(-5deg); }
+  80% { transform: skew(5deg); }
+  100% { transform: skew(0deg); }
+}
+/* --- CYBER NEON SCROLLBAR --- */
+::-webkit-scrollbar {
+  width: 8px; /* Slim and sleek */
+}
+::-webkit-scrollbar-track {
+  background: #050505; /* Pitch black track */
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(57, 255, 20, 0.4); /* Faded neon green */
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(57, 255, 20, 1); /* Full brightness on hover */
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.8);
+}

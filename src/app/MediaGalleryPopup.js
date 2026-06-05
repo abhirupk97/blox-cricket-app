@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import MagneticButton from './MagneticButton';
+
 export default function MediaGalleryPopup({ title, buttonText }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -28,8 +29,9 @@ export default function MediaGalleryPopup({ title, buttonText }) {
   return (
     <>
       <div className="click-more-container">
+        {/* ADDED GLITCH-HOVER HERE */}
         <MagneticButton 
-          className="click-more" 
+          className="click-more glitch-hover" 
           onClick={handleOpen}
           style={{ 
             background: 'none', 
@@ -52,7 +54,7 @@ export default function MediaGalleryPopup({ title, buttonText }) {
             className="modal-content glass-container" 
             onClick={(e) => e.stopPropagation()} 
             style={{ 
-              maxWidth: '800px', /* Made it wider for pictures! */
+              maxWidth: '800px', 
               maxHeight: '85vh', 
               overflowY: 'auto', 
               textAlign: 'center' 
@@ -61,7 +63,7 @@ export default function MediaGalleryPopup({ title, buttonText }) {
             <button className="close-btn" onClick={() => setIsOpen(false)}>
               <i className="fa-solid fa-xmark"></i>
             </button>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{title || "Media Gallery"}</h2>
+            <h2 className="glitch-hover" style={{ fontSize: '2.5rem', marginBottom: '1.5rem' }}>{title || "Media Gallery"}</h2>
 
             {/* THE GALLERY GRID */}
             <div style={{ 
@@ -72,10 +74,10 @@ export default function MediaGalleryPopup({ title, buttonText }) {
             }}>
               
               {/* Placeholder Boxes - We will hook these up to Sanity later! */}
-              <div className="media-box" style={{ height: '200px' }}>PIC 1</div>
-              <div className="media-box" style={{ height: '200px' }}>PIC 2</div>
-              <div className="media-box" style={{ height: '200px' }}>VIDEO 1</div>
-              <div className="media-box" style={{ height: '200px' }}>PIC 3</div>
+              <div className="media-box glitch-hover" style={{ height: '200px' }}>PIC 1</div>
+              <div className="media-box glitch-hover" style={{ height: '200px' }}>PIC 2</div>
+              <div className="media-box glitch-hover" style={{ height: '200px' }}>VIDEO 1</div>
+              <div className="media-box glitch-hover" style={{ height: '200px' }}>PIC 3</div>
 
             </div>
           </div>
