@@ -370,10 +370,10 @@ p, .hero-lines, .section-lines, .box-lines {
   opacity: 0;
   transform: translateY(50px);
   transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: opacity, transform;
+  /* Make sure 'will-change' is deleted if it was here previously! */
 }
 
 .reveal-wrapper.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: none !important; /* MAGIC FIX: 'none' destroys the CSS cage and frees the popup! */
 }

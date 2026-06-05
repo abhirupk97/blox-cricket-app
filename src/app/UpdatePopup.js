@@ -1,9 +1,15 @@
 "use client";
-
-import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
 
 export default function UpdatePopup({ updates }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  // This ensures the portal only tries to open on the actual web browser (client)
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -11,7 +17,7 @@ export default function UpdatePopup({ updates }) {
         <button 
           className="click-more" 
           onClick={(e) => {
-            e.preventDefault(); // This is the magic line that stops the page jump!
+            e.preventDefault(); 
             setIsOpen(true);
           }}
           style={{ 
@@ -28,8 +34,8 @@ export default function UpdatePopup({ updates }) {
         </button>
       </div>
 
-      {/* --- THE FULL UPDATES POPUP MODAL --- */}
-      {isOpen && (
+      {/* --- THE FULL UPDATES POPUP MODAL (NOW TELEPORTED via PORTAL) --- */}
+      {isOpen && mounted && createPortal(
         <div className="modal-backdrop" onClick={() => setIsOpen(false)}>
           <div 
             className="modal-content glass-container" 
@@ -59,7 +65,8 @@ export default function UpdatePopup({ updates }) {
               )}
             </ul>
           </div>
-        </div>
+        </div>,
+        document.body // <-- This is the magic teleport destination!
       )}
     </>
   );
