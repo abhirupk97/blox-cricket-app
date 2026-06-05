@@ -2,7 +2,7 @@
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-
+import MagneticButton from './MagneticButton';
 export default function MediaGalleryPopup({ title, buttonText }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -28,7 +28,7 @@ export default function MediaGalleryPopup({ title, buttonText }) {
   return (
     <>
       <div className="click-more-container">
-        <button 
+        <MagneticButton 
           className="click-more" 
           onClick={handleOpen}
           style={{ 
@@ -42,7 +42,7 @@ export default function MediaGalleryPopup({ title, buttonText }) {
           }}
         >
           {buttonText || "View Gallery →"}
-        </button>
+        </MagneticButton>
       </div>
 
       {/* --- TELEPORTED GALLERY MODAL --- */}

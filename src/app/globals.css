@@ -397,3 +397,41 @@ p, .hero-lines, .section-lines, .box-lines {
   opacity: 1;
   transform: none !important; /* MAGIC FIX: 'none' destroys the CSS cage and frees the popup! */
 }
+/* --- PRELOADER SPIN ANIMATION --- */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* --- MAGNETIC SPOTLIGHT BUTTON --- */
+.magnetic-btn {
+  position: relative;
+  background: transparent;
+  color: var(--neon-green);
+  border: 1px solid rgba(57, 255, 20, 0.3);
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-weight: 600;
+  overflow: hidden;
+}
+
+/* The sweeping spotlight effect */
+.magnetic-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; 
+  left: -100%;
+  width: 50%; 
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.magnetic-btn:hover {
+  border-color: var(--neon-green);
+  box-shadow: 0 0 15px rgba(57, 255, 20, 0.2);
+}
+
+.magnetic-btn:hover::before {
+  left: 100%;
+}

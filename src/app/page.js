@@ -1,3 +1,4 @@
+import ScrollLogo from './ScrollLogo';
 import Head from 'next/head';
 import { client } from '../sanity/lib/client';
 import imageUrlBuilder from '@sanity/image-url';
@@ -8,6 +9,8 @@ import RevealOnScroll from './RevealOnScroll';
 import HeroTypewriter from './HeroTypewriter';
 import MediaGalleryPopup from './MediaGalleryPopup';
 import FireflyBackground from './FireflyBackground';
+import Preloader from './Preloader';
+import MagneticButton from './MagneticButton';
 
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
@@ -24,6 +27,7 @@ export default async function Home() {
 
   return (
     <>
+      <Preloader /> {/* BOOT SEQUENCE INITIALIZED */}
       <Head>
         <title>Cricket Game Website</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -73,21 +77,25 @@ export default async function Home() {
 
       {/* Navigation Bar */}
       <nav className="navbar">
-        <div className="logo">
-          <h2>
-            <span className="text-white">{homepage?.navLogoWhite || 'BLOX'}</span>
-            <span className="text-neon">{homepage?.navLogoNeon || 'CRICKET'}</span>{' '}
-            <i className="fa-solid fa-cricket-bat-ball text-neon"></i>
-          </h2>
-        </div>
+        {/* INTERACTIVE SCROLL-TO-TOP LOGO */}
+        <ScrollLogo 
+          whiteText={homepage?.navLogoWhite} 
+          neonText={homepage?.navLogoNeon} 
+        />
+        
+        {/* MAGNETIC NAVBAR LINKS */}
         <ul className="nav-links">
-          <li><a href="#about-dev" className="scroll-link"><i className="fa-solid fa-user-gear"></i> Abt Dev</a></li>
-          <li><a href="#about-game" className="scroll-link"><i className="fa-solid fa-gamepad"></i> Abt Game</a></li>
-          <li><a href="#game-updates" className="scroll-link"><i className="fa-solid fa-bell"></i> Game Updates</a></li>
-          <li><a href="#media" className="scroll-link"><i className="fa-solid fa-video"></i> Media</a></li>
+          <li><MagneticButton href="#about-dev" className="scroll-link" style={{border: 'none', padding: '8px 15px'}}><i className="fa-solid fa-user-gear"></i> Abt Dev</MagneticButton></li>
+          <li><MagneticButton href="#about-game" className="scroll-link" style={{border: 'none', padding: '8px 15px'}}><i className="fa-solid fa-gamepad"></i> Abt Game</MagneticButton></li>
+          <li><MagneticButton href="#game-updates" className="scroll-link" style={{border: 'none', padding: '8px 15px'}}><i className="fa-solid fa-bell"></i> Game Updates</MagneticButton></li>
+          <li><MagneticButton href="#media" className="scroll-link" style={{border: 'none', padding: '8px 15px'}}><i className="fa-solid fa-video"></i> Media</MagneticButton></li>
         </ul>
+        
+        {/* MAGNETIC PROFILE LOGIN MENU */}
         <div className="profile-menu">
-          <span>{homepage?.playerName || 'BloxPlayer'} <i className="fa-solid fa-chevron-down"></i></span>
+          <MagneticButton style={{border: 'none', padding: '8px 15px'}}>
+            <span>{homepage?.playerName || 'BloxPlayer'} <i className="fa-solid fa-chevron-down"></i></span>
+          </MagneticButton>
         </div>
       </nav>
 

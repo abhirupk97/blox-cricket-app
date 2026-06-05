@@ -1,7 +1,9 @@
 "use client";
+import MagneticButton from './MagneticButton';
 import { createPortal } from 'react-dom';
 import { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
+
 export default function UpdatePopup({ updates }) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -14,21 +16,21 @@ export default function UpdatePopup({ updates }) {
   return (
     <>
       <div className="click-more-container">
-        <button 
+        <MagneticButton 
           className="click-more" 
           onClick={(e) => {
-  e.preventDefault(); 
-  
-  // THE CONFETTI BLAST
-  confetti({
-    particleCount: 100,
-    spread: 70,
-    origin: { y: 0.6 },
-    colors: ['#39FF14', '#ffffff', '#000000'] // Matches your brand colors!
-  });
+            e.preventDefault(); 
+            
+            // THE CONFETTI BLAST
+            confetti({
+              particleCount: 100,
+              spread: 70,
+              origin: { y: 0.6 },
+              colors: ['#39FF14', '#ffffff', '#000000'] // Matches your brand colors!
+            });
 
-  setIsOpen(true);
-}}
+            setIsOpen(true);
+          }}
           style={{ 
             background: 'none', 
             border: 'none', 
@@ -40,7 +42,7 @@ export default function UpdatePopup({ updates }) {
           }}
         >
           Click More &rarr;
-        </button>
+        </MagneticButton>
       </div>
 
       {/* --- THE FULL UPDATES POPUP MODAL (NOW TELEPORTED via PORTAL) --- */}
