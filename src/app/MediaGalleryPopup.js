@@ -5,10 +5,13 @@ import MagneticButton from './MagneticButton';
 
 export default function MediaGalleryPopup({ title, buttonText, mediaItems }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeItem, setActiveItem] = useState(null); // Tracks the single clicked photo/video
+  const [activeItem, setActiveItem] = useState(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
+
+  // Safety check: if mediaItems is empty, don't crash
+  if (!mediaItems) return null;
 
   return (
     <>
@@ -18,11 +21,10 @@ export default function MediaGalleryPopup({ title, buttonText, mediaItems }) {
           onClick={() => setIsOpen(true)}
           style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-secondary)', fontSize: '1rem', fontWeight: 'bold' }}
         >
-          {buttonText || "VIEW FULL GALLERY \u2192"}
+          {buttonText || "VIEW FULL GALLERY →"}
         </MagneticButton>
       </div>
 
-      {/* 1. THE FULL GALLERY MODAL */}
       {isOpen && mounted && createPortal(
         <div className="modal-backdrop" onClick={() => setIsOpen(false)} style={{ zIndex: 99999, background: '#0a0a0a' }}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '1400px', width: '95%', height: '90vh', overflowY: 'auto', background: 'transparent', border: 'none', boxShadow: 'none' }}>
@@ -35,12 +37,12 @@ export default function MediaGalleryPopup({ title, buttonText, mediaItems }) {
               {title || "FULL MEDIA ARCHIVE"}
             </h2>
 
-            {/* The Free Fire Grid inside the Full Gallery */}
             <div className="ff-media-grid">
               {mediaItems.map((item) => (
-                <div key={item.id} className="ff-media-card" onClick={() => setActiveItem(item)}>
+                // Use || fallback to handle both Sanity (thumbUrl) and dummy (thumb) data
+                <div key={item._id || item.id} className="ff-media-card" onClick={() => setActiveItem(item)}>
                   <div className="ff-media-thumb">
-                    <img src={item.thumb} alt={item.title} />
+                    <img src={item.thumbUrl || item.thumb} alt={item.title} />
                     <div className="ff-play-badge">
                       <i className={item.type === 'video' ? 'fa-solid fa-play' : 'fa-solid fa-camera'}></i>
                       {item.duration || 'IMAGE'}
@@ -53,13 +55,11 @@ export default function MediaGalleryPopup({ title, buttonText, mediaItems }) {
                 </div>
               ))}
             </div>
-
           </div>
         </div>,
         document.body
       )}
 
-      {/* 2. THE SINGLE ITEM LIGHTBOX */}
       {activeItem && mounted && createPortal(
         <div className="lightbox-overlay" onClick={() => setActiveItem(null)}>
           <button className="glitch-hover" onClick={() => setActiveItem(null)} style={{ position: 'absolute', top: '40px', right: '50px', fontSize: '1.5rem', color: '#fff', background: 'transparent', border: '2px solid #fff', padding: '10px 25px', cursor: 'pointer', zIndex: 999999, fontFamily: 'Teko' }}>
@@ -67,8 +67,7 @@ export default function MediaGalleryPopup({ title, buttonText, mediaItems }) {
           </button>
           
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            {/* If you had real video files, you'd use <video> here based on activeItem.type */}
-            <img src={activeItem.thumb} alt={activeItem.title} />
+            <img src={activeItem.thumbUrl || activeItem.thumb} alt={activeItem.title} />
           </div>
         </div>,
         document.body

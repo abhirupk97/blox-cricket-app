@@ -1,29 +1,26 @@
-"use client";
+'use client';
 import { useState } from 'react';
-import MagneticButton from './MagneticButton';
 
 export default function InlineExpand({ buttonTextOpen, buttonTextClose, buttonStyle, children }) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div style={{ width: '100%' }}>
-      
-      {/* The Trigger Button */}
-      <MagneticButton 
-        onClick={() => setIsOpen(!isOpen)}
-        className="glitch-hover"
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
         style={buttonStyle}
       >
-        {isOpen ? buttonTextClose : buttonTextOpen}
-      </MagneticButton>
+        {isExpanded ? buttonTextClose : buttonTextOpen}
+      </button>
 
-      {/* The Sliding Content Wrapper */}
-      <div className={`inline-expand-wrapper ${isOpen ? 'is-expanded' : ''}`}>
+      <div
+        className={`inline-expand-wrapper ${isExpanded ? 'is-expanded' : ''}`}
+        style={{ width: '100%' }}
+      >
         <div className="inline-expand-inner">
           {children}
         </div>
       </div>
-
     </div>
   );
 }

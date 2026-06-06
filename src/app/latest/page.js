@@ -9,18 +9,24 @@ import TiltWrapper from '../TiltWrapper';
 import GameFacts from '../GameFacts';
 import ViewAllUpdatesPopup from '../ViewAllUpdatesPopup';
 export const revalidate = 0; 
+import GameLeaks from '../GameLeaks';
+import ParallaxBackground from '../ParallaxBackground';
 
 export default async function LatestUpdatesPage() {
-  // 1. UPDATED QUERY: Now we also ask Sanity for the image URL if it exists
-  const updates = await client.fetch(`
-    *[_type == "gameUpdate"] | order(date desc) {
-      _id,
-      version,
-      date,
-      description,
-      "imageUrl": image.asset->url
-    }
-  `);
+  
+  // FETCH ALL DATA INCLUDING HOMEPAGE FOR THE ROADMAP
+  const [updates, leaks, homepage] = await Promise.all([
+    client.fetch(`*[_type == "gameUpdate"] | order(date desc) {
+      _id, version, date, description, "imageUrl": image.asset->url
+    }`),
+    client.fetch(`*[_type == "gameLeak"] | order(date desc) {
+      _id, title, description, "imageUrl": image.asset->url
+    }`),
+    client.fetch(`*[_type == "homepage"][0]{
+      roadmapText,
+      "roadmapImageUrl": roadmapImage.asset->url
+    }`)
+  ]);
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -32,9 +38,10 @@ export default async function LatestUpdatesPage() {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </Head>
 
-      <div className="bg-overlay"></div>
+      {/* --- INJECT THE PARALLAX BACKGROUND HERE --- */}
+      <ParallaxBackground />
+      <div className="bg-overlay" style={{ background: 'transparent' }}></div> 
 
-      {/* Tactical Navbar */}
       <nav className="navbar" style={{ borderBottom: '1px solid rgba(0,194,255,0.2)' }}>
         <div className="glitch-hover" style={{ display: 'inline-block', cursor: 'pointer' }}>
           <a href="/" style={{ textDecoration: 'none' }}>
@@ -58,16 +65,14 @@ export default async function LatestUpdatesPage() {
         </ul>
 
         <div className="profile-menu">
-          <a href="#login" className="glitch-hover" style={{ textDecoration: 'none', color: 'var(--text-main)', padding: '8px 15px', fontWeight: 'bold', letterSpacing: '1px' }}>
-            LOGIN
-          </a>
-        </div>
+  <a href="/login" className="glitch-hover" style={{ textDecoration: 'none', color: 'var(--text-main)', padding: '8px 15px', fontWeight: 'bold', letterSpacing: '1px' }}>
+    LOGIN
+  </a>
+</div>
       </nav>
 
-     {/* Main Content Area */}
       <main className="dashboard-container" style={{ maxWidth: '1200px', marginTop: '2rem', flex: 1 }}>
         
-        {/* Header - GAME UPDATES */}
         <div style={{ marginBottom: '3rem', borderBottom: '2px solid #333', paddingBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
           <div>
             <h1 className="mega-title" style={{ fontSize: '4rem', textShadow: 'none' }}>
@@ -75,79 +80,76 @@ export default async function LatestUpdatesPage() {
             </h1>
             <div style={{ width: '60px', height: '4px', background: 'var(--accent-secondary)', marginTop: '10px' }}></div>
           </div>
-          
-          {/* INJECTED THE NEW DYNAMIC POPUP BUTTON HERE */}
           <ViewAllUpdatesPopup updates={updates} />
         </div>
 
-        {/* RECENT UPDATES GRID (Only showing Top 3 on the main page) */}
         <div className="news-grid">
           {updates.length === 0 ? (
             <p className="glitch-hover">NO CLASSIFIED DATA FOUND.</p>
           ) : (
             updates.slice(0, 3).map((update) => (
               <div key={update._id} className="news-card">
-                
-                {/* Media Banner */}
                 <div className="news-image-container">
                   {update.imageUrl ? (
                     <img src={update.imageUrl} alt={`Build ${update.version}`} className="news-image" />
                   ) : (
-                    <div style={{ color: '#444', fontFamily: 'Teko', fontSize: '2rem', letterSpacing: '3px' }}>
-                      NO VISUAL INTEL
-                    </div>
+                    <div style={{ color: '#444', fontFamily: 'Teko', fontSize: '2rem', letterSpacing: '3px' }}>NO VISUAL INTEL</div>
                   )}
                 </div>
-
-                {/* Card Content */}
                 <div className="news-content">
                   <div className="news-meta">
                     <span>{update.date || 'RECENT'}</span>
                     <span className="meta-divider">|</span>
                     <span style={{ color: 'var(--text-main)' }}>PATCH</span>
                   </div>
-                  
                   <h3 className="news-title">Build Update {update.version} Deployed</h3>
                   <p className="news-description">{update.description}</p>
                 </div>
-
               </div>
             ))
           )}
         </div>
 
-        {/* ... Rest of your code (ROADMAP) ... */}
-
-        {/* THE ROADMAP */}
+        {/* --- DYNAMIC ROADMAP SECTION --- */}
         <RevealOnScroll id="roadmap" className="content-section">
-          <TiltWrapper className="glass-container" style={{ padding: '3rem' }}>
+          <TiltWrapper 
+  className="glass-container" 
+  style={{ 
+    padding: '3rem',
+    background: 'rgba(20, 24, 28, 0.45)', /* 45% opaque dark background */
+    backdropFilter: 'blur(12px)',         /* The frosted glass blur */
+    WebkitBackdropFilter: 'blur(12px)',   /* Required for Safari support */
+    border: '1px solid rgba(255, 255, 255, 0.08)', /* Subtle reflective edge */
+    borderRadius: '12px' 
+  }}
+>
             <h2 className="glitch-hover" style={{ color: 'var(--accent-secondary)' }}>PROJECT ROADMAP</h2>
-            
             <div className="blinking-cursor-wrapper">
               <input 
                 type="text" 
                 className="live-input glitch-hover" 
-                defaultValue="> SYSTEM_UPDATE: Q4_2026_TARGETS" 
-                spellCheck="false"
+                defaultValue={homepage?.roadmapText || "> SYSTEM_UPDATE: Q4_2026_TARGETS"} 
+                readOnly
+                spellCheck="false" 
               />
             </div>
              <div className="roadmap-wipe-container mt-4">
               <img 
-                src="https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop" 
-                alt="Tactical Roadmap Blueprint" 
+                src={homepage?.roadmapImageUrl || "https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2070&auto=format&fit=crop"} 
+                alt="Roadmap" 
                 className="roadmap-image" 
               />
             </div>
           </TiltWrapper>
         </RevealOnScroll>
 
-      </main>
+        <GameLeaks leaksData={leaks} />
 
-      {/* LIVE TICKER FOOTER */}
+      </main> 
+    
       <div style={{ marginTop: 'auto' }}>
         <GameFacts />
       </div>
-
     </div>
   );
 }

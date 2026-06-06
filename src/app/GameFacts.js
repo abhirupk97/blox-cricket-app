@@ -1,37 +1,36 @@
 "use client";
-import { useState, useEffect } from 'react';
-
-const FACTS = [
-  "FACT 01: Dynamic weather directly affects pitch bounce.",
-  "FACT 02: Perfect timing on a sweep shot multiplies run speed by 1.2x.",
-  "FACT 03: Fast bowlers lose stamina 15% faster in high humidity.",
-  "FACT 04: DRS Hawkeye uses actual real-time 3D physics collision.",
-];
+import { useEffect, useState } from 'react';
+import { client } from '../sanity/lib/client';
 
 export default function GameFacts() {
+  const [facts, setFacts] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    // Cycles exactly every 4 seconds
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % FACTS.length);
-    }, 4000);
-    return () => clearInterval(interval);
+    // Fetch all facts from Sanity
+    client.fetch(`*[_type == "gameFact"]{factText}`).then(data => {
+      setFacts(data);
+    });
   }, []);
+
+  // Simple rotation logic
+  useEffect(() => {
+    if (facts.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentIndex((prev) => (prev + 1) % facts.length);
+      }, 5000); // Rotates every 5 seconds
+      return () => clearInterval(interval);
+    }
+  }, [facts]);
+
+  if (facts.length === 0) return null;
 
   return (
     <div className="ticker-container">
-      {FACTS.map((fact, index) => {
-        let positionClass = 'ticker-exit';
-        if (index === currentIndex) positionClass = 'ticker-active';
-        else if (index === (currentIndex + 1) % FACTS.length) positionClass = 'ticker-enter';
-
-        return (
-          <div key={index} className={`ticker-item ${positionClass}`}>
-             <span className="spin-on-view">🏏</span> {fact}
-          </div>
-        );
-      })}
+      <div className="ticker-item ticker-active">
+        <span className="spin-on-view">🏏</span> 
+        {facts[currentIndex].factText}
+      </div>
     </div>
   );
 }

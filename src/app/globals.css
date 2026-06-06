@@ -1,30 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-/* 1. TACTICAL ROYALE VARIABLES (Valorant + GTA + Free Fire MAX) */
+/* =========================================
+   1. TACTICAL ROYALE VARIABLES
+   ========================================= */
 :root {
-  --neon-green: #FF5722; /* Variable kept for compatibility, but it is now SURVIVAL ORANGE! */
-  --accent-secondary: #FFC107; /* Airdrop Yellow */
-  --bg-dark: #141414; /* Charcoal Matte (GTA Grit) */
-  --card-bg: #1F2326; /* Valorant Gunmetal */
-  --text-main: #ECE8E1; /* Warm Off-White */
+  --neon-green: #FF5722;
+  --accent-secondary: #FFC107;
+  --bg-dark: #141414;
+  --card-bg: #1F2326;
+  --text-main: #ECE8E1;
 }
 
-/* --- CUSTOM SURVIVAL ORANGE CURSOR --- */
-body, html {
+/* =========================================
+   2. CUSTOM CURSOR
+   ========================================= */
+
+/* Only apply custom cursor if the body does NOT contain the sanity class */
+body:not([class*="sanity"]) {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23FF5722"/></svg>') 12 12, auto;
 }
 
-a, button, .click-more, .profile-menu, .close-btn {
+body:not([class*="sanity"]) a, 
+body:not([class*="sanity"]) button, 
+body:not([class*="sanity"]) .click-more, 
+body:not([class*="sanity"]) .profile-menu {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23FF5722"/></svg>') 12 12, pointer !important;
 }
 
+/* Force default cursor for everything inside Sanity */
+[class*="sanity"] * {
+  cursor: default !important;
+}
+
+/* =========================================
+   3. PARTICLES
+   ========================================= */
 #tsparticles {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100vh;
   z-index: 0; pointer-events: none; 
 }
 
-/* 2. CORE HTML & BODY RESET */
+/* =========================================
+   4. CORE RESET
+   ========================================= */
 html { scroll-behavior: smooth; }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -38,34 +57,52 @@ body {
   flex-direction: column;
 }
 
-/* 3. SHARP BRUTALIST CARDS (No more soft glass glow) */
+/* =========================================
+   5. GLASS / CARD
+   ========================================= */
 .glass-container {
   background: var(--card-bg);
   backdrop-filter: blur(20px); 
-  border: 1px solid rgba(255, 255, 255, 0.05); /* Very faint, flat border */
-  border-radius: 2px; /* Brutalist sharp edges */
-  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.6); /* Hard, solid drop shadow */
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2px;
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.6);
   padding: 2rem;
 }
 
-/* Gritty matte background overlay */
 .bg-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
   background: radial-gradient(circle at center, rgba(31,35,38,0.7) 0%, #141414 100%);
   z-index: -1;
+  transition: background 0.8s ease-in-out;
 }
 
-/* Utilities */
+.bg-overlay.pitch-green-mode {
+  background: radial-gradient(circle at center, rgba(57, 255, 20, 0.05) 0%, #08110a 100%) !important;
+}
+
+.bg-overlay::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px),
+    repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px);
+  pointer-events: none; z-index: -1;
+}
+
+/* =========================================
+   6. UTILITIES
+   ========================================= */
 .text-neon { color: var(--neon-green); }
 .text-white { color: var(--text-main); }
 
-/* --- Navbar Styling --- */
+/* =========================================
+   7. NAVBAR
+   ========================================= */
 .navbar {
   position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center;
   padding: 15px 5%;
   background: rgba(20, 20, 20, 0.98);
-  border-bottom: 1px solid #2A2D34; /* Tactical armor plating color */
+  border-bottom: 1px solid #2A2D34;
   z-index: 100;
 }
 
@@ -79,16 +116,32 @@ body {
 .navbar .nav-links a, .navbar a {
   color: var(--text-main) !important; text-decoration: none; font-size: 0.9rem;
   font-weight: 500; opacity: 0.8; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px;
+  position: relative; display: inline-block;
 }
 
 .navbar a:hover { opacity: 1; color: var(--neon-green) !important; }
 
+.navbar .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0%; height: 2px;
+  background: var(--accent-secondary);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar .nav-links a:hover::after { width: 100%; }
+
 .profile-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
 
-/* --- Layout Container --- */
+/* =========================================
+   8. LAYOUT
+   ========================================= */
 .dashboard-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px; flex: 1; display: flex; flex-direction: column; }
 
-/* --- Hero Layout --- */
+/* =========================================
+   9. HERO
+   ========================================= */
 .hero-section { display: flex; flex-direction: column; justify-content: space-between; flex: 1; padding: 20px 0; min-height: calc(100vh - 120px); margin-bottom: 50px; }
 
 .main-content { max-width: 700px; }
@@ -96,13 +149,13 @@ body {
 .mega-title {
   color: var(--neon-green); -webkit-text-fill-color: var(--neon-green); 
   font-size: 5rem; font-weight: 900; text-transform: uppercase;
-  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8); /* Hard brutalist shadow, no glow */
+  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8);
 }
 
 .info-box {
   align-self: flex-end; width: 100%; max-width: 400px;
   background: #1A1C23; border: 1px solid #333; border-radius: 2px; padding: 25px; margin-top: auto; 
-  box-shadow: 4px 4px 0px rgba(0,0,0,0.8); border-left: 4px solid var(--neon-green); /* Accent strip */
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.8); border-left: 4px solid var(--neon-green);
 }
 
 @media (max-width: 768px) {
@@ -111,7 +164,9 @@ body {
   .info-box { align-self: center; margin-top: 40px; }
 }
 
-/* --- Content Sections --- */
+/* =========================================
+   10. CONTENT SECTIONS
+   ========================================= */
 .content-section { scroll-margin-top: 100px; margin-bottom: 3rem; }
 
 h2, .content-section h2 {
@@ -124,7 +179,9 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 .box-lines { font-size: 1.05rem; font-style: italic; line-height: 1.5; text-align: center; }
 .section-lines { font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; color: #888 !important; }
 
-/* Dev Cards Grid */
+/* =========================================
+   11. DEV CARDS
+   ========================================= */
 .dev-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
 .dev-card {
@@ -135,11 +192,13 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 .dev-card:hover {
   border-color: var(--neon-green);
   transform: translate(-4px, -4px);
-  box-shadow: 4px 4px 0px var(--neon-green); /* Hard tactical pop */
+  box-shadow: 4px 4px 0px var(--neon-green);
   color: var(--neon-green);
 }
 
-/* Picture / Video Boxes */
+/* =========================================
+   12. MEDIA BOXES
+   ========================================= */
 .media-box {
   background: #141414; border: 1px solid #333; border-radius: 2px; display: flex; align-items: center; justify-content: center;
   color: #555; font-weight: bold; letter-spacing: 2px; transition: 0.2s; text-transform: uppercase;
@@ -149,12 +208,14 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 .placeholder-box { height: 250px; }
 .large-media-box { height: 400px; }
 
-/* Updates List */
+/* =========================================
+   13. UPDATES LIST
+   ========================================= */
 .update-list-numbered { list-style: none; counter-reset: custom-counter; }
 .update-list-numbered li { counter-increment: custom-counter; margin-bottom: 15px; font-size: 1.05rem; display: flex; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #2A2D34; }
 .update-list-numbered li:last-child { border-bottom: none; }
 .update-list-numbered li::before {
-  content: counter(custom-counter); background: var(--neon-green); color: #000; width: 30px; height: 30px; border-radius: 2px; /* Squared numbers */
+  content: counter(custom-counter); background: var(--neon-green); color: #000; width: 30px; height: 30px; border-radius: 2px;
   display: flex; justify-content: center; align-items: center; font-weight: 800; margin-right: 15px; flex-shrink: 0;
 }
 
@@ -164,7 +225,9 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 
 @media (max-width: 768px) { .dev-cards { grid-template-columns: 1fr; } .content-section h2 { font-size: 2.8rem; } }
 
-/* --- POPUP MODAL STYLES --- */
+/* =========================================
+   14. MODAL
+   ========================================= */
 .modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .modal-content {
   position: relative; background: var(--card-bg); padding: 3rem 2rem; border-radius: 2px; max-width: 500px; width: 90%; text-align: center;
@@ -177,7 +240,9 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 
 @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
-/* --- ADVANCED SCROLL REVEAL ANIMATIONS --- */
+/* =========================================
+   15. SCROLL REVEAL
+   ========================================= */
 .reveal-wrapper { opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal-slide-up { transform: translateY(30px); }
 .reveal-slide-up.is-visible { opacity: 1; transform: none !important; }
@@ -187,58 +252,16 @@ p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important;
 .reveal-scale.is-visible { opacity: 1; transform: scale(1) translateY(0) !important; }
 .reveal-wrapper.is-visible { opacity: 1; transform: none !important; }
 
-/* --- PRELOADER SPIN ANIMATION --- */
+/* =========================================
+   16. PRELOADER
+   ========================================= */
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* --- MAGNETIC SPOTLIGHT BUTTON --- */
-.magnetic-btn {
-  position: relative; background: transparent; color: var(--text-main); border: 1px solid #444; padding: 12px 24px;
-  border-radius: 2px; font-family: inherit; font-weight: 600; overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
-}
-
-.magnetic-btn::before {
-  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-  background: var(--neon-green); transition: left 0.3s ease; z-index: -1;
-}
-
-.magnetic-btn:hover { border-color: var(--neon-green); color: #000 !important; /* Sharp contrast change on hover */ }
-.magnetic-btn:hover::before { left: 0; }
-
-/* --- CYBER GLITCH HOVER EFFECT --- */
-.glitch-hover { position: relative; display: inline-block; transition: all 0.2s ease; cursor: crosshair; }
-p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
-
-.glitch-hover:hover {
-  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-  color: var(--accent-secondary) !important;
-  text-shadow: -2px 0 var(--neon-green), 2px 0 #FFFFFF; /* Orange and White tearing */
-}
-
-@keyframes glitch-skew {
-  0% { transform: skew(0deg); }
-  20% { transform: skew(-10deg); }
-  40% { transform: skew(10deg); }
-  60% { transform: skew(-5deg); }
-  80% { transform: skew(5deg); }
-  100% { transform: skew(0deg); }
-}
-
-/* --- CYBER SCROLLBAR --- */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 1px solid #222; }
-::-webkit-scrollbar-thumb { background: #444; border-radius: 0px; }
-::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
-/* =========================================
-   PHASE 1: CINEMATIC BOOT & TACTICAL NAV
-   ========================================= */
-
-/* --- THE BLACKOUT PRELOADER --- */
 .blackout-preloader {
   position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-  background-color: #050505; /* Pitch Black */
+  background-color: #050505;
   z-index: 99999;
   display: flex; justify-content: center; align-items: center;
-  /* The aggressive SLAM out animation after 1.8s */
   animation: slamOut 0.4s cubic-bezier(0.7, 0, 0.3, 1) 1.8s forwards;
 }
 
@@ -253,10 +276,12 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   100% { transform: translateY(-100%); opacity: 0; visibility: hidden; display: none; }
 }
 
-/* --- THE PULSING "LIVE" DOT --- */
+/* =========================================
+   17. LIVE DOT
+   ========================================= */
 .live-dot {
   display: inline-block; width: 8px; height: 8px; 
-  background-color: #FF4655; /* Valorant Red */
+  background-color: #FF4655;
   border-radius: 50%; margin-left: 8px; margin-bottom: 2px;
   box-shadow: 0 0 8px rgba(255, 70, 85, 0.8);
   animation: pulse-red 1s infinite alternate;
@@ -267,72 +292,114 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   100% { opacity: 1; transform: scale(1.2); }
 }
 
-/* --- NAV DROP-IN ANIMATION --- */
+/* =========================================
+   18. NAV DROP ANIMATION
+   ========================================= */
 .nav-drop {
   opacity: 0; 
   transform: translateY(-20px);
-  /* The cubic-bezier makes it snap aggressively into place */
   animation: dropIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Stagger the delay so they drop in one by one AFTER the preloader finishes (1.8s) */
 .nav-drop:nth-child(1) { animation-delay: 1.9s; }
 .nav-drop:nth-child(2) { animation-delay: 2.0s; }
 .nav-drop:nth-child(3) { animation-delay: 2.1s; }
 .nav-drop:nth-child(4) { animation-delay: 2.2s; }
 
-@keyframes dropIn { 
-  to { opacity: 1; transform: translateY(0); } 
-}
-/* =========================================
-   PHASE 2: KINETIC SCROLL & DYNAMIC PITCH
-   ========================================= */
+@keyframes dropIn { to { opacity: 1; transform: translateY(0); } }
 
-/* --- THE BRUTALIST SNAP-UP --- */
+/* =========================================
+   19. TACTICAL REVEAL (SCROLL)
+   ========================================= */
 .tactical-reveal {
   opacity: 0;
-  transform: translateY(60px); /* Starts 60px lower */
-  /* The exact timing curve for a sharp, heavy mechanical snap */
+  transform: translateY(60px);
   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
               transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .tactical-reveal.is-visible {
   opacity: 1;
-  transform: translateY(0); /* Snaps aggressively to zero */
+  transform: translateY(0);
 }
 
-/* --- DYNAMIC BACKGROUND SHIFT --- */
-/* By default, the overlay is Navy. We create a class to shift it to Pitch Green */
-.bg-overlay {
-  transition: background 0.8s ease-in-out;
-}
-
-.bg-overlay.pitch-green-mode {
-  background: radial-gradient(circle at center, rgba(57, 255, 20, 0.05) 0%, #08110a 100%) !important;
-}
 /* =========================================
-   PHASE 3: ROCKSTAR MEDIA & SPOTLIGHT GRID
+   20. MAGNETIC BUTTON
    ========================================= */
+.magnetic-btn {
+  position: relative; background: transparent; color: var(--text-main); border: 1px solid #444; padding: 12px 24px;
+  border-radius: 2px; font-family: inherit; font-weight: 600; overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
+}
 
-/* --- THE SPOTLIGHT 4-ITEM GRID --- */
+.magnetic-btn::before {
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: var(--neon-green); transition: left 0.3s ease; z-index: -1;
+}
+
+.magnetic-btn:hover { border-color: var(--neon-green); color: #000 !important; }
+.magnetic-btn:hover::before { left: 0; }
+
+/* =========================================
+   21. GLITCH HOVER
+   ========================================= */
+.glitch-hover { position: relative; display: inline-block; transition: all 0.2s ease; cursor: crosshair; }
+p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
+
+.glitch-hover:hover {
+  animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+  color: var(--accent-secondary) !important;
+  text-shadow: -2px 0 var(--neon-green), 2px 0 #FFFFFF;
+}
+
+@keyframes glitch-skew {
+  0% { transform: skew(0deg); }
+  20% { transform: skew(-10deg); }
+  40% { transform: skew(10deg); }
+  60% { transform: skew(-5deg); }
+  80% { transform: skew(5deg); }
+  100% { transform: skew(0deg); }
+}
+
+/* =========================================
+   22. SCROLLBAR
+   ========================================= */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 1px solid #222; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 0px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
+
+/* =========================================
+   23. CINEMATIC CUT
+   ========================================= */
+.cinematic-cut {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  background: #000; z-index: 999999; pointer-events: none;
+  animation: flashCut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes flashCut {
+  0% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
+/* =========================================
+   24. SPOTLIGHT GRID
+   ========================================= */
 .spotlight-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 4px; /* Razor thin gaps */
+  gap: 4px;
   padding: 10px;
   background: var(--bg-dark);
   border: 1px solid rgba(0, 194, 255, 0.2);
 }
 
-/* The parent container controls the dimming */
 .spotlight-grid:hover .spotlight-item {
   opacity: 0.3;
   filter: grayscale(80%);
   transform: scale(0.98);
 }
 
-/* The specific item you hover over fights back and gets brighter */
 .spotlight-grid .spotlight-item:hover {
   opacity: 1;
   filter: grayscale(0%);
@@ -358,11 +425,10 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   letter-spacing: 2px;
 }
 
-/* --- THE ROCKSTAR GOLD OVERLAY --- */
 .rockstar-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(247, 148, 29, 0.8); /* GTA Gold */
+  background: rgba(247, 148, 29, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -371,39 +437,27 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
 }
 
 .spotlight-item:hover .rockstar-overlay,
-.media-box:hover .rockstar-overlay {
-  opacity: 1;
-}
+.media-box:hover .rockstar-overlay { opacity: 1; }
 
-/* The Play Button Triangle */
 .play-icon {
-  width: 0; 
-  height: 0; 
+  width: 0; height: 0; 
   border-top: 15px solid transparent;
   border-bottom: 15px solid transparent;
-  border-left: 25px solid var(--bg-dark); /* Dark Navy Triangle */
+  border-left: 25px solid var(--bg-dark);
   transform: scale(0.8);
   transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .spotlight-item:hover .play-icon,
-.media-box:hover .play-icon {
-  transform: scale(1.1);
-}
+.media-box:hover .play-icon { transform: scale(1.1); }
 
-/* --- ROCKSTAR STAGGERED LAYOUT --- */
-.rockstar-stagger {
-  display: flex;
-  gap: 15px;
-  margin-top: 1.5rem;
-}
+.rockstar-stagger { display: flex; gap: 15px; margin-top: 1.5rem; }
 .rockstar-stagger > div:nth-child(1) { transform: translateY(20px); }
 .rockstar-stagger > div:nth-child(2) { transform: translateY(-10px); }
-/* =========================================
-   PHASE 4: ROADMAP WIPE & LIVE TICKER
-   ========================================= */
 
-/* --- 1. HORIZONTAL IMAGE WIPE REVEAL --- */
+/* =========================================
+   25. ROADMAP
+   ========================================= */
 .roadmap-wipe-container {
   overflow: hidden;
   position: relative;
@@ -414,18 +468,15 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
 .roadmap-image {
   width: 100%;
   display: block;
-  /* Starts completely hidden (clipped to the left edge) */
   clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
   transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-  filter: grayscale(30%) contrast(1.2); /* Tactical Blueprint Look */
+  filter: grayscale(30%) contrast(1.2);
 }
 
-/* When the RevealOnScroll triggers, the clip-path expands fully right */
 .tactical-reveal.is-visible .roadmap-image {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
 }
 
-/* --- 2. LIVE COMMAND LINE CURSOR --- */
 .live-input {
   background: transparent;
   border: none;
@@ -441,12 +492,11 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   outline: none;
   transition: border-color 0.3s;
 }
-.live-input:focus {
-  border-color: var(--neon-green);
-}
+.live-input:focus { border-color: var(--neon-green); }
+
 .blinking-cursor-wrapper { position: relative; display: inline-block; width: 100%; max-width: 500px; }
 .blinking-cursor-wrapper::after {
-  content: '█'; /* Block cursor */
+  content: '█';
   position: absolute; right: 0; bottom: 10px;
   color: var(--accent-secondary);
   animation: blink 1s step-end infinite;
@@ -454,7 +504,9 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
 }
 @keyframes blink { 50% { opacity: 0; } }
 
-/* --- 3. HIGH-SPEED TICKER TAPE --- */
+/* =========================================
+   26. TICKER
+   ========================================= */
 .ticker-container {
   position: relative;
   height: 60px;
@@ -476,7 +528,6 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   letter-spacing: 2px;
   color: var(--text-main);
   text-transform: uppercase;
-  /* Fast, mechanical snap */
   transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
 }
 
@@ -484,7 +535,6 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
 .ticker-active { transform: translateX(0); opacity: 1; }
 .ticker-exit { transform: translateX(-100%); opacity: 0; }
 
-/* The spinning cricket ball icon */
 .spin-on-view {
   display: inline-block;
   margin-right: 15px;
@@ -494,62 +544,10 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
   100% { transform: rotate(0deg) scale(1); opacity: 1; }
 }
+
 /* =========================================
-   PHASE 5: FINAL POLISH & MICRO-INTERACTIONS
+   27. NEWS GRID
    ========================================= */
-
-/* --- 1. CRICKET FIELD LINE TEXTURE --- */
-/* We add this to your existing bg-overlay */
-.bg-overlay::after {
-  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-  /* Creates a subtle, massive tactical grid/yardage lines */
-  background-image: 
-    repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px),
-    repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px);
-  pointer-events: none; z-index: -1;
-}
-
-/* --- 2. GOLD UNDERLINE WIPE --- */
-.navbar .nav-links a {
-  position: relative;
-  display: inline-block;
-}
-
-.navbar .nav-links a::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background: var(--accent-secondary); /* GTA Gold */
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.navbar .nav-links a:hover::after {
-  width: 100%; /* Wipes in from left to right */
-}
-
-/* --- 3. CINEMATIC CUT FLASH --- */
-.cinematic-cut {
-  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-  background: #000; z-index: 999999; pointer-events: none;
-  animation: flashCut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-@keyframes flashCut {
-  0% { opacity: 1; }
-  100% { opacity: 0; display: none; }
-}
-
-/* --- 4. HIDE NATIVE CURSOR FOR THE CUSTOM ONE --- */
-body, html, a, button, .click-more, .profile-menu, .close-btn {
-  cursor: none !important; /* Hide the native cursor completely */
-}
-/* =========================================
-   PHASE 6: LIVE SERVICE NEWS GRID
-   ========================================= */
-
 .news-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -557,24 +555,20 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   margin-bottom: 5rem;
 }
 
-.news-card {
-  background: var(--card-bg);
+.news-card, .ff-media-card {
+  /* Replace your current solid background with this: */
+  background: rgba(10, 10, 10, 0.5); 
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-  overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  cursor: pointer;
 }
 
 .news-card:hover {
   transform: translateY(-8px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
-  border-color: var(--accent-secondary); /* Flashes Gold/Orange on hover */
+  border-color: var(--accent-secondary);
 }
 
-/* The Image Banner */
 .news-image-container {
   width: 100%;
   height: 180px;
@@ -594,11 +588,8 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.news-card:hover .news-image {
-  transform: scale(1.08); /* Slow cinematic zoom on hover */
-}
+.news-card:hover .news-image { transform: scale(1.08); }
 
-/* The Text Content Below Image */
 .news-content {
   padding: 1.5rem;
   display: flex;
@@ -617,11 +608,7 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   text-transform: uppercase;
 }
 
-/* The divider between Date and Category */
-.meta-divider {
-  margin: 0 10px;
-  color: var(--neon-green);
-}
+.meta-divider { margin: 0 10px; color: var(--neon-green); }
 
 .news-title {
   font-size: 1.3rem;
@@ -636,50 +623,90 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   line-height: 1.6;
   font-size: 1rem;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* Limits text to 3 lines with an ellipsis */
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-/* =========================================
-   PHASE 7: ROCKSTAR 'ABOUT GAME' & FEATURES
-   ========================================= */
 
-/* --- MAIN PAGE SPLIT LAYOUT (GTA STYLE) --- */
+/* =========================================
+   28. GTA SPLIT LAYOUT (ABOUT GAME)
+   ========================================= */
 .gta-split-section {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  margin: 4rem 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin: 4rem 0 2rem 0;
+  width: 100%;
+  align-items: start;
 }
 
 .gta-split-media {
-  flex: 1.2;
+  width: 100%;
   position: relative;
+  overflow: hidden; 
+  border-radius: 4px;
 }
 
 .gta-split-media img {
   width: 100%;
   height: auto;
-  object-fit: cover;
-  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.4); /* Hard tactical shadow */
+  display: block;
 }
 
 .gta-split-text {
-  flex: 1;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-/* --- STAGGERED FEATURES ROWS (POPUP) --- */
+@media (max-width: 900px) {
+  .gta-split-section {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* =========================================
+   29. FEATURE ROWS (INLINE EXPAND — REPLACES POPUP)
+   ========================================= */
+
+/* The expand/collapse wrapper — uses CSS grid trick for smooth height animation */
+.features-expand-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.4s ease;
+  overflow: hidden;
+  opacity: 0;
+  width: 100%;
+}
+
+.features-expand-wrapper.is-expanded {
+  grid-template-rows: 1fr;
+  opacity: 1;
+}
+
+.features-expand-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* The toggle button hover state */
+.features-toggle-btn:hover {
+  background: var(--accent-secondary) !important;
+  color: #000 !important;
+  border-color: var(--accent-secondary) !important;
+}
+
+/* Feature rows: zig-zag layout */
 .feature-row {
   display: flex;
   align-items: center;
   gap: 60px;
-  margin-bottom: 6rem;
+  margin-bottom: 5rem;
 }
 
-/* Reverses the layout for the zig-zag effect */
 .feature-row.reverse {
   flex-direction: row-reverse;
 }
@@ -701,9 +728,9 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
 
 .feature-text h3 {
   font-family: 'Teko', sans-serif;
-  font-size: 3.5rem;
+  font-size: 2.8rem;
   color: var(--text-main);
-  line-height: 1;
+  line-height: 1.1;
   margin-bottom: 15px;
   text-transform: uppercase;
   text-shadow: none;
@@ -711,21 +738,21 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
 
 .feature-text p {
   color: #ccc;
-  font-size: 1.2rem;
-  line-height: 1.6;
+  font-size: 1.1rem;
+  line-height: 1.7;
 }
 
-@media (max-width: 900px) {
-  .gta-split-section, .feature-row, .feature-row.reverse {
+@media (max-width: 768px) {
+  .feature-row,
+  .feature-row.reverse {
     flex-direction: column;
     gap: 30px;
   }
 }
-/* =========================================
-   PHASE 8: FREE FIRE MEDIA ENGINE
-   ========================================= */
 
-/* --- 1. THE MEDIA GRID --- */
+/* =========================================
+   30. FREE FIRE MEDIA ENGINE
+   ========================================= */
 .ff-media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -733,16 +760,8 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   margin: 2rem 0;
 }
 
-.ff-media-card {
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-}
 
-/* The Thumbnail Container */
+
 .ff-media-thumb {
   position: relative;
   width: 100%;
@@ -750,7 +769,7 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   background: #0a0a0a;
   overflow: hidden;
   border: 1px solid rgba(255,255,255,0.1);
-  border-bottom: 2px solid var(--accent-secondary); /* Gold accent */
+  border-bottom: 2px solid var(--accent-secondary);
 }
 
 .ff-media-thumb img {
@@ -760,15 +779,11 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.ff-media-card:hover .ff-media-thumb img {
-  transform: scale(1.05); /* Slight zoom on hover, NOT shaky */
-}
+.ff-media-card:hover .ff-media-thumb img { transform: scale(1.05); }
 
-/* Bottom Left Play/Timestamp Badge */
 .ff-play-badge {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  bottom: 0; left: 0;
   background: rgba(0, 0, 0, 0.85);
   padding: 5px 12px;
   display: flex;
@@ -782,7 +797,6 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
 
 .ff-play-badge i { color: var(--neon-green); font-size: 0.9rem; }
 
-/* Text Below Image */
 .ff-media-meta {
   font-family: 'Teko', sans-serif;
   color: #888;
@@ -801,11 +815,10 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
 }
 .ff-media-card:hover .ff-media-title { color: var(--neon-green); }
 
-/* --- 2. SINGLE LIGHTBOX OVERLAY --- */
 .lightbox-overlay {
   position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
   background: rgba(5, 5, 5, 0.95);
-  z-index: 9999998; /* Just below the cursor */
+  z-index: 9999998;
   display: flex; justify-content: center; align-items: center;
   animation: fadeIn 0.2s ease forwards;
 }
@@ -822,13 +835,13 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
 .lightbox-content img { width: 100%; height: 100%; object-fit: contain; }
 
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-/* =========================================
-   PHASE 9: THE DEVS SECTION (CYBER-TACTICAL)
-   ========================================= */
 
+/* =========================================
+   31. DEVS SECTION
+   ========================================= */
 .devs-cyber-container {
   display: flex;
-  background: transparent; /* Made the background transparent as requested */
+  background: transparent;
   border: 1px solid rgba(255, 255, 255, 0.05); 
   border-radius: 6px;
   overflow: hidden;
@@ -836,12 +849,8 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   margin-bottom: 2rem;
 }
 
-/* Removed the green static/glow background completely for a clean look */
-.devs-cyber-container::before {
-  display: none; 
-}
+.devs-cyber-container::before { display: none; }
 
-/* Changed the Left Border to your Orange/Gold */
 .devs-left-panel {
   flex: 1;
   padding: 3rem 4rem;
@@ -869,9 +878,8 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   .devs-right-panel { padding: 2rem; justify-content: flex-start; }
 }
 
-/* --- NEW DEV PROFILE POPUP STYLES --- */
 .hacker-profile-card {
-  background: #0d1116; /* Deep tactical dark */
+  background: #0d1116;
   border: 1px solid rgba(255,255,255,0.05);
   border-radius: 12px;
   padding: 2.5rem;
@@ -882,7 +890,6 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   color: #fff;
 }
 
-/* The Glowing Avatar Ring */
 .dev-avatar-ring {
   width: 120px;
   height: 120px;
@@ -892,22 +899,14 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px solid #39FF14; /* Neon Green Ring from screenshot */
+  border: 3px solid #39FF14;
   box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
   position: relative;
 }
 
-.dev-avatar-ring i {
-  font-size: 3rem;
-  color: #39FF14;
-}
+.dev-avatar-ring i { font-size: 3rem; color: #39FF14; }
 
-/* Verified Badge & Tags */
-.verified-badge {
-  color: #39FF14;
-  margin-left: 8px;
-  font-size: 1.2rem;
-}
+.verified-badge { color: #39FF14; margin-left: 8px; font-size: 1.2rem; }
 
 .dev-skills-row {
   display: flex;
@@ -928,30 +927,239 @@ body, html, a, button, .click-more, .profile-menu, .close-btn {
   gap: 8px;
 }
 
-.skill-tag i {
-  color: #39FF14;
-}
-/* =========================================
-   PHASE 10: INLINE EXPANSION ENGINE
-   ========================================= */
+.skill-tag i { color: #39FF14; }
 
+/* =========================================
+   32. INLINE EXPAND ENGINE (DEVS SECTION)
+   ========================================= */
 .inline-expand-wrapper {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: grid-template-rows 0.4s ease-out;
   overflow: hidden;
-  margin-top: 0;
-  opacity: 0;
 }
 
 .inline-expand-wrapper.is-expanded {
   grid-template-rows: 1fr;
-  margin-top: 3rem;
-  opacity: 1;
 }
 
 .inline-expand-inner {
-  min-height: 0; 
-  /* This prevents margin collapse issues during the slide */
-  padding-bottom: 1px; 
+  overflow: hidden;
+  min-height: 0;
+}
+/* =========================================
+   33. GAME LEAKS (FORZA STYLE GRID)
+   ========================================= */
+
+.leaks-section-container {
+  width: 100%;
+  margin: 6rem 0;
+}
+
+/* The Forza Header: Text on the left, line stretching to the right */
+.leaks-header-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 2.5rem;
+}
+
+.leaks-header-title {
+  font-family: 'Teko', sans-serif;
+  font-size: 3.5rem;
+  color: #fff;
+  text-transform: uppercase;
+  white-space: nowrap;
+  line-height: 1;
+  margin: 0;
+}
+
+.leaks-header-line {
+  flex-grow: 1;
+  height: 4px;
+  background: var(--neon-green); /* Uses your site's Orange/Green accent */
+  box-shadow: 0 0 10px rgba(255, 87, 34, 0.5);
+}
+
+/* 2-Column Grid */
+.leaks-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  margin-bottom: 3rem;
+}
+
+.leak-card {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.leak-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 8px; /* Soft rounded corners from the reference */
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.05);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.leak-card:hover .leak-image {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+  border-color: var(--accent-secondary);
+}
+
+.leak-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.leak-desc {
+  font-size: 1rem;
+  color: #aaa;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .leaks-grid { grid-template-columns: 1fr; gap: 30px; }
+  .leaks-header-title { font-size: 2.8rem; }
+}
+/* --- LEAKS POPUP MODAL --- */
+.leaks-modal-content {
+  position: relative;
+  background: #0d1116; /* Deep tactical dark */
+  padding: 4rem 3rem;
+  border-radius: 6px;
+  max-width: 1100px; /* Much wider to fit the grid */
+  width: 95%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--accent-secondary);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  animation: popIn 0.2s ease-out forwards;
+}
+
+.leaks-modal-content .close-btn {
+  top: 25px;
+  right: 30px;
+  font-size: 2rem;
+  color: var(--accent-secondary);
+  z-index: 10;
+}
+/* Force cursor visibility in Sanity Studio */
+[class*="sanity"] {
+  cursor: auto !important;
+}
+/* NAVBAR HOVER FIX: HIGH CONTRAST */
+.nav-links .scroll-link:hover,
+.profile-menu a:hover {
+  background-color: var(--neon-green) !important; /* The solid orange box */
+  color: #050505 !important; /* Forces text to be dark for readability */
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+/* =========================================
+   STAFF LOGIN PORTAL STYLES
+   ========================================= */
+
+.login-glass-box {
+  background: rgba(20, 24, 28, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Creates the sleek top highlight seen in the screenshot */
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.login-input-group {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.login-input-group i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+  z-index: 2;
+}
+
+.login-input {
+  width: 100%;
+  background: rgba(10, 10, 10, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  padding: 14px 15px 14px 45px;
+  border-radius: 4px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Interactive Focus State (Flashes Amber) */
+.login-input:focus {
+  border-color: var(--accent-secondary);
+  box-shadow: 0 0 12px rgba(255, 193, 7, 0.2);
+  background: rgba(15, 15, 15, 0.9);
+}
+
+.login-input-group:focus-within i {
+  color: var(--accent-secondary);
+}
+
+.tactical-btn {
+  width: 100%;
+  background: linear-gradient(180deg, #FF7043 0%, #E64A19 100%);
+  color: #fff;
+  border: 1px solid #D84315;
+  padding: 14px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(230, 74, 25, 0.3);
+  font-family: 'Teko', sans-serif;
+}
+
+.tactical-btn:hover {
+  background: linear-gradient(180deg, #FF8A65 0%, #F4511E 100%);
+  box-shadow: 0 0 20px rgba(255, 87, 34, 0.6);
+  transform: translateY(-2px);
+}
+
+.forgot-link {
+  color: #aaa;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: color 0.2s ease;
+}
+
+.forgot-link span {
+  color: var(--accent-secondary);
+}
+
+.forgot-link:hover span {
+  text-decoration: underline;
+  text-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
 }
