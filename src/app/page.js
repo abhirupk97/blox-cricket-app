@@ -169,7 +169,7 @@ export default async function Home() {
                   <div className="dev-avatar-ring"><i className="fa-solid fa-code"></i></div>
                   <div style={{ textAlign: 'center' }}>
                     <h2 style={{ fontSize: '2.2rem', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'Teko, sans-serif', letterSpacing: '2px' }}>
-                      ABHIRUP <i className="fa-solid fa-certificate verified-badge"></i>
+                      TEXOLUS <i className="fa-solid fa-certificate verified-badge"></i>
                     </h2>
                     <p style={{ color: '#888', margin: '5px 0 20px 0', fontSize: '0.95rem' }}>Full Stack Developer</p>
                   </div>
