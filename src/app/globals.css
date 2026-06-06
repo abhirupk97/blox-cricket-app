@@ -1,43 +1,32 @@
 @import url('https://fonts.googleapis.com/css2?family=Teko:wght@600;700&family=Inter:wght@400;500;600;700&display=swap');
 
-/* 1. BLUE STADIUM NIGHT VARIABLES */
+/* 1. TACTICAL ROYALE VARIABLES (Valorant + GTA + Free Fire MAX) */
 :root {
-  --neon-green: #4FC3F7; /* Variable kept for compatibility, but it is now SKY BLUE! */
-  --bg-dark: #060B18;    /* Midnight Navy */
-  --text-main: #ffffff;
+  --neon-green: #FF5722; /* Variable kept for compatibility, but it is now SURVIVAL ORANGE! */
+  --accent-secondary: #FFC107; /* Airdrop Yellow */
+  --bg-dark: #141414; /* Charcoal Matte (GTA Grit) */
+  --card-bg: #1F2326; /* Valorant Gunmetal */
+  --text-main: #ECE8E1; /* Warm Off-White */
 }
 
-/* --- CUSTOM SKY BLUE BALL CURSOR --- */
+/* --- CUSTOM SURVIVAL ORANGE CURSOR --- */
 body, html {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%234FC3F7"/></svg>') 12 12, auto;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23FF5722"/></svg>') 12 12, auto;
 }
 
-/* Ensure buttons and links keep the blue ball when hovering */
 a, button, .click-more, .profile-menu, .close-btn {
-  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%234FC3F7"/></svg>') 12 12, pointer !important;
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%23FF5722"/></svg>') 12 12, pointer !important;
 }
 
-/* Forces the particles to stay in the background and not block your clicks */
 #tsparticles {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 0; 
-  pointer-events: none; 
+  top: 0; left: 0; width: 100%; height: 100vh;
+  z-index: 0; pointer-events: none; 
 }
 
 /* 2. CORE HTML & BODY RESET */
-html {
-  scroll-behavior: smooth;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+html { scroll-behavior: smooth; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Inter', sans-serif;
@@ -49,143 +38,73 @@ body {
   flex-direction: column;
 }
 
-/* 3. RESTORE THE VISIBLE GLASS BOXES */
+/* 3. SHARP BRUTALIST CARDS (No more soft glass glow) */
 .glass-container {
-  background: rgba(79, 195, 247, 0.08); /* New Blue Stadium transparent background */
-  backdrop-filter: blur(12px); /* The frosted glass blur */
-  border: 1px solid rgba(79, 195, 247, 0.3); /* The glowing blue border! */
-  border-radius: 12px;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+  background: var(--card-bg);
+  backdrop-filter: blur(20px); 
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Very faint, flat border */
+  border-radius: 2px; /* Brutalist sharp edges */
+  box-shadow: 6px 6px 0px rgba(0, 0, 0, 0.6); /* Hard, solid drop shadow */
   padding: 2rem;
 }
 
-/* Smooth stadium night gradient overlay */
+/* Gritty matte background overlay */
 .bg-overlay {
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background: radial-gradient(circle at center, rgba(79,195,247,0.1) 0%, #060B18 80%);
+  background: radial-gradient(circle at center, rgba(31,35,38,0.7) 0%, #141414 100%);
   z-index: -1;
 }
 
 /* Utilities */
 .text-neon { color: var(--neon-green); }
-.text-white { color: #fff; }
+.text-white { color: var(--text-main); }
 
 /* --- Navbar Styling --- */
 .navbar {
-  position: sticky;
-  top: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: sticky; top: 0; display: flex; justify-content: space-between; align-items: center;
   padding: 15px 5%;
-  background: rgba(6, 11, 24, 0.95);
-  border-bottom: 1px solid rgba(79, 195, 247, 0.2);
+  background: rgba(20, 20, 20, 0.98);
+  border-bottom: 1px solid #2A2D34; /* Tactical armor plating color */
   z-index: 100;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
 .logo h2 {
-  font-family: 'Teko', sans-serif;
-  font-size: 2rem;
-  letter-spacing: 1px;
-  font-style: italic;
-  text-transform: uppercase;
-  color: var(--neon-green);
+  font-family: 'Teko', sans-serif; font-size: 2rem; letter-spacing: 1px;
+  font-style: italic; text-transform: uppercase; color: var(--neon-green);
 }
 
-.nav-links {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-}
+.nav-links { display: flex; list-style: none; gap: 30px; }
 
-/* Navbar Link Colors & Hover Effects */
 .navbar .nav-links a, .navbar a {
-  color: #ffffff !important;
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  opacity: 0.8;
-  transition: all 0.3s ease;
+  color: var(--text-main) !important; text-decoration: none; font-size: 0.9rem;
+  font-weight: 500; opacity: 0.8; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px;
 }
 
-.navbar .login-link, .navbar a[href*="login"] {
-  color: #ffffff !important;
-  opacity: 0.8;
-}
+.navbar a:hover { opacity: 1; color: var(--neon-green) !important; }
 
-.navbar a:hover {
-  opacity: 1;
-  color: var(--neon-green) !important;
-}
-
-.profile-menu {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
-
-.avatar {
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  border: 2px solid var(--neon-green);
-}
+.profile-menu { display: flex; align-items: center; gap: 10px; cursor: pointer; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
 
 /* --- Layout Container --- */
-.dashboard-container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 20px;
-  flex: 1; 
-  display: flex;
-  flex-direction: column;
-}
+.dashboard-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 40px 20px; flex: 1; display: flex; flex-direction: column; }
 
 /* --- Hero Layout --- */
-.hero-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  flex: 1; 
-  padding: 20px 0;
-  min-height: calc(100vh - 120px);
-  margin-bottom: 50px;
-}
+.hero-section { display: flex; flex-direction: column; justify-content: space-between; flex: 1; padding: 20px 0; min-height: calc(100vh - 120px); margin-bottom: 50px; }
 
-.main-content {
-  max-width: 700px;
-}
+.main-content { max-width: 700px; }
 
 .mega-title {
-  color: var(--neon-green); 
-  -webkit-text-fill-color: var(--neon-green); 
-  font-size: 5rem; 
-  font-weight: 900;
-  text-transform: uppercase;
-  text-shadow: 0 0 20px rgba(79, 195, 247, 0.4); 
+  color: var(--neon-green); -webkit-text-fill-color: var(--neon-green); 
+  font-size: 5rem; font-weight: 900; text-transform: uppercase;
+  text-shadow: 4px 4px 0px rgba(0, 0, 0, 0.8); /* Hard brutalist shadow, no glow */
 }
 
-/* Styled Box placed at the bottom right */
 .info-box {
-  align-self: flex-end; 
-  width: 100%;
-  max-width: 400px;
-  background: rgba(79, 195, 247, 0.05);
-  backdrop-filter: blur(8px);
-  border: 2px solid var(--neon-green);
-  border-radius: 12px;
-  padding: 25px;
-  margin-top: auto; 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 15px rgba(79, 195, 247, 0.1);
+  align-self: flex-end; width: 100%; max-width: 400px;
+  background: #1A1C23; border: 1px solid #333; border-radius: 2px; padding: 25px; margin-top: auto; 
+  box-shadow: 4px 4px 0px rgba(0,0,0,0.8); border-left: 4px solid var(--neon-green); /* Accent strip */
 }
 
-/* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
   .mega-title { font-size: 4.5rem; }
   .hero-section { height: auto; gap: 40px; }
@@ -193,279 +112,106 @@ body {
 }
 
 /* --- Content Sections --- */
-.content-section {
-  scroll-margin-top: 100px; 
-  margin-bottom: 3rem; 
-}
+.content-section { scroll-margin-top: 100px; margin-bottom: 3rem; }
 
 h2, .content-section h2 {
-  font-family: 'Teko', sans-serif;
-  font-size: 3.5rem;
-  color: var(--neon-green);
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-  line-height: 1;
+  font-family: 'Teko', sans-serif; font-size: 3.5rem; color: var(--text-main);
+  letter-spacing: 1px; margin-bottom: 10px; line-height: 1; text-transform: uppercase;
 }
 
-/* Make all standard text, quotes, and lines white */
-p, .hero-lines, .section-lines, .box-lines {
-  color: #ffffff !important; 
-}
-
-.hero-lines {
-  font-size: 1.25rem;
-  line-height: 1.6;
-  font-weight: 500;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-.box-lines {
-  font-size: 1.05rem;
-  font-style: italic;
-  line-height: 1.5;
-  text-align: center;
-}
-
-.section-lines {
-  font-size: 1.1rem;
-  margin-bottom: 30px;
-  line-height: 1.6;
-  font-style: italic;
-  opacity: 0.9;
-}
+p, .hero-lines, .section-lines, .box-lines { color: var(--text-main) !important; }
+.hero-lines { font-size: 1.25rem; line-height: 1.6; font-weight: 500; text-shadow: 2px 2px 0px rgba(0,0,0,0.8); }
+.box-lines { font-size: 1.05rem; font-style: italic; line-height: 1.5; text-align: center; }
+.section-lines { font-size: 1.1rem; margin-bottom: 30px; line-height: 1.6; color: #888 !important; }
 
 /* Dev Cards Grid */
-.dev-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
+.dev-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
 .dev-card {
-  background: rgba(6, 11, 24, 0.6);
-  border: 1px solid rgba(79, 195, 247, 0.3);
-  border-radius: 8px;
-  padding: 50px 20px;
-  text-align: center;
-  font-weight: 600;
-  font-size: 1.2rem;
-  color: var(--neon-green);
-  transition: 0.3s;
+  background: #141414; border: 1px solid #333; border-radius: 2px; padding: 50px 20px;
+  text-align: center; font-weight: 600; font-size: 1.2rem; color: var(--text-main); transition: 0.2s;
 }
 
 .dev-card:hover {
   border-color: var(--neon-green);
-  transform: translateY(-5px);
+  transform: translate(-4px, -4px);
+  box-shadow: 4px 4px 0px var(--neon-green); /* Hard tactical pop */
+  color: var(--neon-green);
 }
 
 /* Picture / Video Boxes */
 .media-box {
-  background: rgba(6, 11, 24, 0.6);
-  border: 2px dashed rgba(79, 195, 247, 0.5);
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #777;
-  font-weight: bold;
-  letter-spacing: 2px;
-  transition: 0.3s;
+  background: #141414; border: 1px solid #333; border-radius: 2px; display: flex; align-items: center; justify-content: center;
+  color: #555; font-weight: bold; letter-spacing: 2px; transition: 0.2s; text-transform: uppercase;
 }
 
-.media-box:hover {
-  border-color: var(--neon-green);
-  color: var(--neon-green);
-}
-
+.media-box:hover { border-color: var(--neon-green); color: var(--neon-green); }
 .placeholder-box { height: 250px; }
 .large-media-box { height: 400px; }
 
 /* Updates List */
-.update-list-numbered {
-  list-style: none;
-  counter-reset: custom-counter;
-}
-
-.update-list-numbered li {
-  counter-increment: custom-counter;
-  margin-bottom: 15px;
-  font-size: 1.05rem;
-  display: flex;
-  align-items: center;
-  padding-bottom: 15px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-}
-
-.update-list-numbered li:last-child {
-  border-bottom: none;
-}
-
+.update-list-numbered { list-style: none; counter-reset: custom-counter; }
+.update-list-numbered li { counter-increment: custom-counter; margin-bottom: 15px; font-size: 1.05rem; display: flex; align-items: center; padding-bottom: 15px; border-bottom: 1px solid #2A2D34; }
+.update-list-numbered li:last-child { border-bottom: none; }
 .update-list-numbered li::before {
-  content: counter(custom-counter);
-  background: var(--neon-green);
-  color: #060B18;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 800;
-  margin-right: 15px;
-  flex-shrink: 0;
+  content: counter(custom-counter); background: var(--neon-green); color: #000; width: 30px; height: 30px; border-radius: 2px; /* Squared numbers */
+  display: flex; justify-content: center; align-items: center; font-weight: 800; margin-right: 15px; flex-shrink: 0;
 }
 
-.click-more-container {
-  text-align: right;
-  margin-top: 10px;
-}
+.click-more-container { text-align: right; margin-top: 10px; }
+.click-more { color: var(--neon-green); text-decoration: none; font-weight: 600; font-size: 1rem; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+.click-more:hover { color: var(--accent-secondary); }
 
-.click-more {
-  color: var(--neon-green);
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: 0.2s;
-}
-
-.click-more:hover {
-  text-shadow: 0 0 10px var(--neon-green);
-}
-
-@media (max-width: 768px) {
-  .dev-cards { grid-template-columns: 1fr; }
-  .content-section h2 { font-size: 2.8rem; }
-}
+@media (max-width: 768px) { .dev-cards { grid-template-columns: 1fr; } .content-section h2 { font-size: 2.8rem; } }
 
 /* --- POPUP MODAL STYLES --- */
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(6, 11, 24, 0.8);
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; 
-}
-
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; }
 .modal-content {
-  position: relative;
-  background: rgba(6, 11, 24, 0.95);
-  padding: 3rem 2rem;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  text-align: center;
-  border: 1px solid var(--neon-green);
-  box-shadow: 0 0 30px rgba(79, 195, 247, 0.15);
-  animation: popIn 0.3s ease-out forwards;
+  position: relative; background: var(--card-bg); padding: 3rem 2rem; border-radius: 2px; max-width: 500px; width: 90%; text-align: center;
+  border: 1px solid #444; box-shadow: 8px 8px 0px rgba(0,0,0,0.8); border-top: 4px solid var(--neon-green);
+  animation: popIn 0.2s ease-out forwards;
 }
 
-.close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  background: transparent;
-  color: white;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  transition: 0.2s;
-}
+.close-btn { position: absolute; top: 15px; right: 20px; background: transparent; color: #888; border: none; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+.close-btn:hover { color: var(--neon-green); transform: scale(1.1); }
 
-.close-btn:hover {
-  color: var(--neon-green);
-  transform: scale(1.1);
-}
-
-@keyframes popIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
-}
+@keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
 /* --- ADVANCED SCROLL REVEAL ANIMATIONS --- */
-.reveal-wrapper {
-  opacity: 0;
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.reveal-slide-up { transform: translateY(50px); }
+.reveal-wrapper { opacity: 0; transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal-slide-up { transform: translateY(30px); }
 .reveal-slide-up.is-visible { opacity: 1; transform: none !important; }
-
-.reveal-rotate {
-  transform: perspective(1000px) rotateX(-20deg) translateY(60px);
-  transform-origin: bottom center;
-}
+.reveal-rotate { transform: perspective(1000px) rotateX(-10deg) translateY(30px); transform-origin: bottom center; }
 .reveal-rotate.is-visible { opacity: 1; transform: perspective(1000px) rotateX(0deg) translateY(0) !important; }
-
-.reveal-scale { transform: scale(0.85) translateY(40px); }
+.reveal-scale { transform: scale(0.95) translateY(20px); }
 .reveal-scale.is-visible { opacity: 1; transform: scale(1) translateY(0) !important; }
-
-.reveal-wrapper.is-visible {
-  opacity: 1;
-  transform: none !important;
-}
+.reveal-wrapper.is-visible { opacity: 1; transform: none !important; }
 
 /* --- PRELOADER SPIN ANIMATION --- */
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 /* --- MAGNETIC SPOTLIGHT BUTTON --- */
 .magnetic-btn {
-  position: relative;
-  background: transparent;
-  color: var(--neon-green);
-  border: 1px solid rgba(79, 195, 247, 0.3);
-  padding: 12px 24px;
-  border-radius: 8px;
-  font-family: inherit;
-  font-weight: 600;
-  overflow: hidden;
+  position: relative; background: transparent; color: var(--text-main); border: 1px solid #444; padding: 12px 24px;
+  border-radius: 2px; font-family: inherit; font-weight: 600; overflow: hidden; text-transform: uppercase; letter-spacing: 1px;
 }
 
 .magnetic-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; 
-  left: -100%;
-  width: 50%; 
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(79, 195, 247, 0.4), transparent);
-  transition: left 0.5s ease;
+  content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: var(--neon-green); transition: left 0.3s ease; z-index: -1;
 }
 
-.magnetic-btn:hover {
-  border-color: var(--neon-green);
-  box-shadow: 0 0 15px rgba(79, 195, 247, 0.2);
-}
-
-.magnetic-btn:hover::before {
-  left: 100%;
-}
+.magnetic-btn:hover { border-color: var(--neon-green); color: #000 !important; /* Sharp contrast change on hover */ }
+.magnetic-btn:hover::before { left: 0; }
 
 /* --- CYBER GLITCH HOVER EFFECT --- */
-.glitch-hover {
-  position: relative;
-  display: inline-block;
-  transition: all 0.2s ease;
-  cursor: crosshair; 
-}
-
-p.glitch-hover, li.glitch-hover, div.glitch-hover {
-  display: block; 
-}
+.glitch-hover { position: relative; display: inline-block; transition: all 0.2s ease; cursor: crosshair; }
+p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
 
 .glitch-hover:hover {
   animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-  color: var(--neon-green) !important;
-  /* Swapped to Purple and Sky Blue! */
-  text-shadow: -2px 0 #7C4DFF, 2px 0 #4FC3F7; 
+  color: var(--accent-secondary) !important;
+  text-shadow: -2px 0 var(--neon-green), 2px 0 #FFFFFF; /* Orange and White tearing */
 }
 
 @keyframes glitch-skew {
@@ -477,18 +223,735 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover {
   100% { transform: skew(0deg); }
 }
 
-/* --- CYBER NEON SCROLLBAR --- */
-::-webkit-scrollbar {
-  width: 8px; 
+/* --- CYBER SCROLLBAR --- */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); border-left: 1px solid #222; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 0px; }
+::-webkit-scrollbar-thumb:hover { background: var(--neon-green); }
+/* =========================================
+   PHASE 1: CINEMATIC BOOT & TACTICAL NAV
+   ========================================= */
+
+/* --- THE BLACKOUT PRELOADER --- */
+.blackout-preloader {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  background-color: #050505; /* Pitch Black */
+  z-index: 99999;
+  display: flex; justify-content: center; align-items: center;
+  /* The aggressive SLAM out animation after 1.8s */
+  animation: slamOut 0.4s cubic-bezier(0.7, 0, 0.3, 1) 1.8s forwards;
 }
-::-webkit-scrollbar-track {
-  background: var(--bg-dark); 
+
+.boot-logo {
+  font-family: 'Teko', sans-serif; font-size: 5rem; color: #ECE8E1; letter-spacing: 5px;
+  opacity: 0; transform: scale(0.95); transition: opacity 0.8s ease, transform 0.8s ease;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(79, 195, 247, 0.4); 
-  border-radius: 10px;
+.boot-logo.fade-in { opacity: 1; transform: scale(1); }
+
+@keyframes slamOut {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100%); opacity: 0; visibility: hidden; display: none; }
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(79, 195, 247, 1); 
-  box-shadow: 0 0 10px rgba(79, 195, 247, 0.8);
+
+/* --- THE PULSING "LIVE" DOT --- */
+.live-dot {
+  display: inline-block; width: 8px; height: 8px; 
+  background-color: #FF4655; /* Valorant Red */
+  border-radius: 50%; margin-left: 8px; margin-bottom: 2px;
+  box-shadow: 0 0 8px rgba(255, 70, 85, 0.8);
+  animation: pulse-red 1s infinite alternate;
+}
+
+@keyframes pulse-red {
+  0% { opacity: 0.4; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* --- NAV DROP-IN ANIMATION --- */
+.nav-drop {
+  opacity: 0; 
+  transform: translateY(-20px);
+  /* The cubic-bezier makes it snap aggressively into place */
+  animation: dropIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger the delay so they drop in one by one AFTER the preloader finishes (1.8s) */
+.nav-drop:nth-child(1) { animation-delay: 1.9s; }
+.nav-drop:nth-child(2) { animation-delay: 2.0s; }
+.nav-drop:nth-child(3) { animation-delay: 2.1s; }
+.nav-drop:nth-child(4) { animation-delay: 2.2s; }
+
+@keyframes dropIn { 
+  to { opacity: 1; transform: translateY(0); } 
+}
+/* =========================================
+   PHASE 2: KINETIC SCROLL & DYNAMIC PITCH
+   ========================================= */
+
+/* --- THE BRUTALIST SNAP-UP --- */
+.tactical-reveal {
+  opacity: 0;
+  transform: translateY(60px); /* Starts 60px lower */
+  /* The exact timing curve for a sharp, heavy mechanical snap */
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tactical-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0); /* Snaps aggressively to zero */
+}
+
+/* --- DYNAMIC BACKGROUND SHIFT --- */
+/* By default, the overlay is Navy. We create a class to shift it to Pitch Green */
+.bg-overlay {
+  transition: background 0.8s ease-in-out;
+}
+
+.bg-overlay.pitch-green-mode {
+  background: radial-gradient(circle at center, rgba(57, 255, 20, 0.05) 0%, #08110a 100%) !important;
+}
+/* =========================================
+   PHASE 3: ROCKSTAR MEDIA & SPOTLIGHT GRID
+   ========================================= */
+
+/* --- THE SPOTLIGHT 4-ITEM GRID --- */
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px; /* Razor thin gaps */
+  padding: 10px;
+  background: var(--bg-dark);
+  border: 1px solid rgba(0, 194, 255, 0.2);
+}
+
+/* The parent container controls the dimming */
+.spotlight-grid:hover .spotlight-item {
+  opacity: 0.3;
+  filter: grayscale(80%);
+  transform: scale(0.98);
+}
+
+/* The specific item you hover over fights back and gets brighter */
+.spotlight-grid .spotlight-item:hover {
+  opacity: 1;
+  filter: grayscale(0%);
+  transform: scale(1.02);
+  z-index: 10;
+  box-shadow: 0 0 20px rgba(0, 194, 255, 0.4);
+  border-color: var(--neon-green);
+}
+
+.spotlight-item {
+  position: relative;
+  height: 200px;
+  background: #182533;
+  border: 1px solid #333;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #555;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+/* --- THE ROCKSTAR GOLD OVERLAY --- */
+.rockstar-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(247, 148, 29, 0.8); /* GTA Gold */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.spotlight-item:hover .rockstar-overlay,
+.media-box:hover .rockstar-overlay {
+  opacity: 1;
+}
+
+/* The Play Button Triangle */
+.play-icon {
+  width: 0; 
+  height: 0; 
+  border-top: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 25px solid var(--bg-dark); /* Dark Navy Triangle */
+  transform: scale(0.8);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.spotlight-item:hover .play-icon,
+.media-box:hover .play-icon {
+  transform: scale(1.1);
+}
+
+/* --- ROCKSTAR STAGGERED LAYOUT --- */
+.rockstar-stagger {
+  display: flex;
+  gap: 15px;
+  margin-top: 1.5rem;
+}
+.rockstar-stagger > div:nth-child(1) { transform: translateY(20px); }
+.rockstar-stagger > div:nth-child(2) { transform: translateY(-10px); }
+/* =========================================
+   PHASE 4: ROADMAP WIPE & LIVE TICKER
+   ========================================= */
+
+/* --- 1. HORIZONTAL IMAGE WIPE REVEAL --- */
+.roadmap-wipe-container {
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(0, 194, 255, 0.3);
+  border-radius: 4px;
+}
+
+.roadmap-image {
+  width: 100%;
+  display: block;
+  /* Starts completely hidden (clipped to the left edge) */
+  clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+  transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+  filter: grayscale(30%) contrast(1.2); /* Tactical Blueprint Look */
+}
+
+/* When the RevealOnScroll triggers, the clip-path expands fully right */
+.tactical-reveal.is-visible .roadmap-image {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+/* --- 2. LIVE COMMAND LINE CURSOR --- */
+.live-input {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #333;
+  color: var(--neon-green);
+  font-family: 'Teko', monospace;
+  font-size: 2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  width: 100%;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+.live-input:focus {
+  border-color: var(--neon-green);
+}
+.blinking-cursor-wrapper { position: relative; display: inline-block; width: 100%; max-width: 500px; }
+.blinking-cursor-wrapper::after {
+  content: '█'; /* Block cursor */
+  position: absolute; right: 0; bottom: 10px;
+  color: var(--accent-secondary);
+  animation: blink 1s step-end infinite;
+  pointer-events: none;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* --- 3. HIGH-SPEED TICKER TAPE --- */
+.ticker-container {
+  position: relative;
+  height: 60px;
+  overflow: hidden;
+  background: #182533;
+  border-top: 1px solid rgba(0,194,255,0.2);
+  border-bottom: 1px solid rgba(0,194,255,0.2);
+  display: flex;
+  align-items: center;
+  margin-top: 4rem;
+}
+
+.ticker-item {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  font-family: 'Teko', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--text-main);
+  text-transform: uppercase;
+  /* Fast, mechanical snap */
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s;
+}
+
+.ticker-enter { transform: translateX(100%); opacity: 0; }
+.ticker-active { transform: translateX(0); opacity: 1; }
+.ticker-exit { transform: translateX(-100%); opacity: 0; }
+
+/* The spinning cricket ball icon */
+.spin-on-view {
+  display: inline-block;
+  margin-right: 15px;
+  animation: ballSpin 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes ballSpin {
+  0% { transform: rotate(-180deg) scale(0.5); opacity: 0; }
+  100% { transform: rotate(0deg) scale(1); opacity: 1; }
+}
+/* =========================================
+   PHASE 5: FINAL POLISH & MICRO-INTERACTIONS
+   ========================================= */
+
+/* --- 1. CRICKET FIELD LINE TEXTURE --- */
+/* We add this to your existing bg-overlay */
+.bg-overlay::after {
+  content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  /* Creates a subtle, massive tactical grid/yardage lines */
+  background-image: 
+    repeating-linear-gradient(0deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px),
+    repeating-linear-gradient(90deg, transparent, transparent 100px, rgba(255,255,255,0.02) 100px, rgba(255,255,255,0.02) 101px);
+  pointer-events: none; z-index: -1;
+}
+
+/* --- 2. GOLD UNDERLINE WIPE --- */
+.navbar .nav-links a {
+  position: relative;
+  display: inline-block;
+}
+
+.navbar .nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: var(--accent-secondary); /* GTA Gold */
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar .nav-links a:hover::after {
+  width: 100%; /* Wipes in from left to right */
+}
+
+/* --- 3. CINEMATIC CUT FLASH --- */
+.cinematic-cut {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  background: #000; z-index: 999999; pointer-events: none;
+  animation: flashCut 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes flashCut {
+  0% { opacity: 1; }
+  100% { opacity: 0; display: none; }
+}
+
+/* --- 4. HIDE NATIVE CURSOR FOR THE CUSTOM ONE --- */
+body, html, a, button, .click-more, .profile-menu, .close-btn {
+  cursor: none !important; /* Hide the native cursor completely */
+}
+/* =========================================
+   PHASE 6: LIVE SERVICE NEWS GRID
+   ========================================= */
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 5rem;
+}
+
+.news-card {
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.news-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+  border-color: var(--accent-secondary); /* Flashes Gold/Orange on hover */
+}
+
+/* The Image Banner */
+.news-image-container {
+  width: 100%;
+  height: 180px;
+  background: #0a0a0a;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 2px solid var(--accent-secondary);
+}
+
+.news-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.news-card:hover .news-image {
+  transform: scale(1.08); /* Slow cinematic zoom on hover */
+}
+
+/* The Text Content Below Image */
+.news-content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.news-meta {
+  font-family: 'Teko', sans-serif;
+  font-size: 1.2rem;
+  color: #888;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+/* The divider between Date and Category */
+.meta-divider {
+  margin: 0 10px;
+  color: var(--neon-green);
+}
+
+.news-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+
+.news-description {
+  color: #aaa;
+  line-height: 1.6;
+  font-size: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limits text to 3 lines with an ellipsis */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* =========================================
+   PHASE 7: ROCKSTAR 'ABOUT GAME' & FEATURES
+   ========================================= */
+
+/* --- MAIN PAGE SPLIT LAYOUT (GTA STYLE) --- */
+.gta-split-section {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  margin: 4rem 0;
+}
+
+.gta-split-media {
+  flex: 1.2;
+  position: relative;
+}
+
+.gta-split-media img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  box-shadow: 20px 20px 0px rgba(0, 0, 0, 0.4); /* Hard tactical shadow */
+}
+
+.gta-split-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* --- STAGGERED FEATURES ROWS (POPUP) --- */
+.feature-row {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 6rem;
+}
+
+/* Reverses the layout for the zig-zag effect */
+.feature-row.reverse {
+  flex-direction: row-reverse;
+}
+
+.feature-media {
+  flex: 1.2;
+}
+
+.feature-media img {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.feature-text {
+  flex: 1;
+}
+
+.feature-text h3 {
+  font-family: 'Teko', sans-serif;
+  font-size: 3.5rem;
+  color: var(--text-main);
+  line-height: 1;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+.feature-text p {
+  color: #ccc;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .gta-split-section, .feature-row, .feature-row.reverse {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+/* =========================================
+   PHASE 8: FREE FIRE MEDIA ENGINE
+   ========================================= */
+
+/* --- 1. THE MEDIA GRID --- */
+.ff-media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 25px;
+  margin: 2rem 0;
+}
+
+.ff-media-card {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+/* The Thumbnail Container */
+.ff-media-thumb {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #0a0a0a;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-bottom: 2px solid var(--accent-secondary); /* Gold accent */
+}
+
+.ff-media-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ff-media-card:hover .ff-media-thumb img {
+  transform: scale(1.05); /* Slight zoom on hover, NOT shaky */
+}
+
+/* Bottom Left Play/Timestamp Badge */
+.ff-play-badge {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Teko', monospace;
+  font-size: 1.2rem;
+  color: #fff;
+  border-top-right-radius: 4px;
+}
+
+.ff-play-badge i { color: var(--neon-green); font-size: 0.9rem; }
+
+/* Text Below Image */
+.ff-media-meta {
+  font-family: 'Teko', sans-serif;
+  color: #888;
+  font-size: 1.1rem;
+  margin: 15px 0 5px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.ff-meta-divider { margin: 0 8px; color: var(--neon-green); }
+
+.ff-media-title {
+  font-size: 1.2rem;
+  color: var(--text-main);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ff-media-card:hover .ff-media-title { color: var(--neon-green); }
+
+/* --- 2. SINGLE LIGHTBOX OVERLAY --- */
+.lightbox-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(5, 5, 5, 0.95);
+  z-index: 9999998; /* Just below the cursor */
+  display: flex; justify-content: center; align-items: center;
+  animation: fadeIn 0.2s ease forwards;
+}
+
+.lightbox-content {
+  position: relative;
+  width: 90%; max-width: 1200px;
+  aspect-ratio: 16/9;
+  background: #000;
+  border: 1px solid var(--accent-secondary);
+  box-shadow: 0 0 50px rgba(0,0,0,0.8);
+}
+
+.lightbox-content img { width: 100%; height: 100%; object-fit: contain; }
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+/* =========================================
+   PHASE 9: THE DEVS SECTION (CYBER-TACTICAL)
+   ========================================= */
+
+.devs-cyber-container {
+  display: flex;
+  background: transparent; /* Made the background transparent as requested */
+  border: 1px solid rgba(255, 255, 255, 0.05); 
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+/* Removed the green static/glow background completely for a clean look */
+.devs-cyber-container::before {
+  display: none; 
+}
+
+/* Changed the Left Border to your Orange/Gold */
+.devs-left-panel {
+  flex: 1;
+  padding: 3rem 4rem;
+  position: relative;
+  z-index: 1;
+  border-left: 5px solid var(--accent-secondary); 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.devs-right-panel {
+  flex: 1;
+  padding: 3rem;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+  .devs-cyber-container { flex-direction: column; }
+  .devs-left-panel { padding: 2rem; border-left: none; border-top: 5px solid var(--accent-secondary); }
+  .devs-right-panel { padding: 2rem; justify-content: flex-start; }
+}
+
+/* --- NEW DEV PROFILE POPUP STYLES --- */
+.hacker-profile-card {
+  background: #0d1116; /* Deep tactical dark */
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 12px;
+  padding: 2.5rem;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  position: relative;
+  color: #fff;
+}
+
+/* The Glowing Avatar Ring */
+.dev-avatar-ring {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: #050505;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #39FF14; /* Neon Green Ring from screenshot */
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+  position: relative;
+}
+
+.dev-avatar-ring i {
+  font-size: 3rem;
+  color: #39FF14;
+}
+
+/* Verified Badge & Tags */
+.verified-badge {
+  color: #39FF14;
+  margin-left: 8px;
+  font-size: 1.2rem;
+}
+
+.dev-skills-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.skill-tag {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skill-tag i {
+  color: #39FF14;
+}
+/* =========================================
+   PHASE 10: INLINE EXPANSION ENGINE
+   ========================================= */
+
+.inline-expand-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  margin-top: 0;
+  opacity: 0;
+}
+
+.inline-expand-wrapper.is-expanded {
+  grid-template-rows: 1fr;
+  margin-top: 3rem;
+  opacity: 1;
+}
+
+.inline-expand-inner {
+  min-height: 0; 
+  /* This prevents margin collapse issues during the slide */
+  padding-bottom: 1px; 
 }

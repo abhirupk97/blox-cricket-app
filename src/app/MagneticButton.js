@@ -1,43 +1,66 @@
 "use client";
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
-export default function MagneticButton({ children, onClick, className, style, href }) {
-  const buttonRef = useRef(null);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+export default function MagneticButton({ children, href, className, style, onClick }) {
+  const [ripples, setRipples] = useState([]);
 
-  const handleMouseMove = (e) => {
-    const { clientX, clientY } = e;
-    const { width, height, left, top } = buttonRef.current.getBoundingClientRect();
-    const centerX = left + width / 2;
-    const centerY = top + height / 2;
-    const x = (clientX - centerX) * 0.3;
-    const y = (clientY - centerY) * 0.3;
-    setPosition({ x, y });
+  const handleClick = (e) => {
+    // Calculate where the click happened relative to the button
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    // Create a new ripple instance
+    const newRipple = { x, y, id: Date.now() };
+    setRipples((prev) => [...prev, newRipple]);
+
+    // Clean up the ripple after animation finishes (500ms)
+    setTimeout(() => {
+      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
+    }, 500);
+
+    if (onClick) onClick(e);
   };
 
-  const handleMouseLeave = () => {
-    setPosition({ x: 0, y: 0 });
-  };
-
-  // MAGIC TRICK: If an href is provided, act like a link. Otherwise, act like a button!
-  const Component = href ? 'a' : 'button';
+  const Element = href ? 'a' : 'button';
 
   return (
-    <Component
-      href={href}
-      ref={buttonRef}
-      className={`magnetic-btn ${className || ''}`}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      style={{
-        ...style,
-        transform: `translate(${position.x}px, ${position.y}px)`,
-        transition: position.x === 0 ? 'transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)' : 'none',
-        display: 'inline-block' // Ensures the physics work perfectly on links
-      }}
+    <Element 
+      href={href} 
+      className={`magnetic-btn ${className || ''}`} 
+      style={{ ...style, position: 'relative', overflow: 'hidden' }}
+      onClick={handleClick}
     >
-      {children}
-    </Component>
+      <span style={{ position: 'relative', zIndex: 2 }}>{children}</span>
+      
+      {/* Map through and render the dark ripples */}
+      {ripples.map((ripple) => (
+        <span
+          key={ripple.id}
+          style={{
+            position: 'absolute',
+            top: ripple.y,
+            left: ripple.x,
+            width: '20px',
+            height: '20px',
+            background: 'rgba(0, 0, 0, 0.6)', /* Tactical Dark Ripple */
+            borderRadius: '50%',
+            transform: 'translate(-50%, -50%) scale(0)',
+            animation: 'rippleBlast 0.5s linear forwards',
+            zIndex: 1
+          }}
+        />
+      ))}
+
+      {/* Ripple Animation strictly for this button */}
+      <style jsx>{`
+        @keyframes rippleBlast {
+          to {
+            transform: translate(-50%, -50%) scale(15);
+            opacity: 0;
+          }
+        }
+      `}</style>
+    </Element>
   );
 }

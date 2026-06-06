@@ -1,37 +1,35 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 
-// We added 'animationType' so you can choose: "slide-up", "rotate", or "scale"
-export default function RevealOnScroll({ children, id, className, animationType = "slide-up" }) {
+export default function RevealOnScroll({ children, id, className }) {
   const [isVisible, setIsVisible] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
-    const currentRef = ref.current;
+    // This observer watches exactly when the section enters the screen
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.unobserve(currentRef);
+          // Once it snaps in, it locks into place permanently
+          observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15 } // Triggers when 15% of the card is visible
+      { threshold: 0.15 } // Triggers exactly when 15% of the section is visible
     );
 
-    if (currentRef) observer.observe(currentRef);
-    return () => {
-      if (currentRef) observer.unobserve(currentRef);
-    };
+    if (ref.current) observer.observe(ref.current);
+    return () => { if (ref.current) observer.unobserve(ref.current); };
   }, []);
 
-  // Notice how it dynamically applies your chosen animation class!
   return (
-    <div
-      id={id}
-      ref={ref}
-      className={`reveal-wrapper reveal-${animationType} ${className || ""} ${isVisible ? "is-visible" : ""}`}
+    <section 
+      id={id} 
+      ref={ref} 
+      /* We apply the new tactical-reveal class here */
+      className={`tactical-reveal ${isVisible ? 'is-visible' : ''} ${className || ''}`}
     >
       {children}
-    </div>
+    </section>
   );
 }
