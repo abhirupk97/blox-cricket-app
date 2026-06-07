@@ -1,61 +1,178 @@
-"use client";
-import Head from 'next/head';
-import ParallaxBackground from '../ParallaxBackground'; 
-import CursorTrail from '../CursorTrail';
-import LagCursor from '../LagCursor';
-import ScrambleText from '../ScrambleText';
-import Navbar from '../Navbar'; // 1. Import your shared Navbar
-
-export default function StaffLogin() {
+'use client';
+import { useState } from 'react';
+ 
+export default function LoginPage() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+ 
+    try {
+      const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+ 
+      if (res.ok) {
+        // Hard redirect — forces browser to send the new cookie with the request
+        window.location.href = '/studio';
+      } else {
+        const data = await res.json();
+        setError(data.error || 'Invalid credentials');
+      }
+    } catch (err) {
+      setError('Something went wrong. Try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+ 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', position: 'relative' }}>
-      <CursorTrail />
-      <LagCursor />
-      
-      {/* 2. Add the Navbar here at the top */}
-      <Navbar homepage={{}} /> 
-
-      <Head>
-        <title>Staff Entry | Blox Cricket</title>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-      </Head>
-
-      <ParallaxBackground />
-      <div style={{ position: 'fixed', inset: 0, background: 'rgba(5, 5, 5, 0.4)', zIndex: -1 }}></div>
-
-      {/* Login Box */}
-      <div className="login-glass-box" style={{ marginTop: '100px' }}> {/* Added top margin to clear the navbar */}
-        
-        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-          <h1 style={{ fontSize: '3.5rem', margin: '0 0 10px 0', fontFamily: 'Teko, sans-serif', textTransform: 'uppercase', letterSpacing: '2px', color: '#fff' }}>
-            STAFF ENTRY
-          </h1>
-          <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.5', margin: 0 }}>
-            Welcome back to the crease, player! Ready for your innings?
-          </p>
-        </div>
-
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className="login-input-group">
-            <i className="fa-solid fa-user"></i>
-            <input type="text" className="login-input" placeholder="Player ID (Email/Phone)" required spellCheck="false" />
+    <div style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: '#0a0a0a',
+      fontFamily: 'Inter, sans-serif',
+    }}>
+      <div style={{
+        background: '#1a1a1a',
+        border: '1px solid #333',
+        borderTop: '3px solid #FFC107',
+        padding: '3rem 2.5rem',
+        width: '100%',
+        maxWidth: '420px',
+        borderRadius: '2px',
+      }}>
+        <h1 style={{
+          fontFamily: 'Teko, sans-serif',
+          fontSize: '2.5rem',
+          color: '#FFC107',
+          letterSpacing: '2px',
+          marginBottom: '0.25rem',
+          textTransform: 'uppercase',
+        }}>
+          STAFF LOGIN
+        </h1>
+        <p style={{
+          color: '#555',
+          fontSize: '0.8rem',
+          marginBottom: '2rem',
+          letterSpacing: '1px',
+          textTransform: 'uppercase',
+        }}>
+          BLOX CRICKET — ADMIN ACCESS
+        </p>
+ 
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+ 
+          <div>
+            <label style={{
+              display: 'block',
+              color: '#666',
+              fontSize: '0.75rem',
+              letterSpacing: '1px',
+              marginBottom: '6px',
+              textTransform: 'uppercase',
+            }}>
+              Username
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={e => setUsername(e.target.value)}
+              autoComplete="username"
+              required
+              style={{
+                width: '100%',
+                background: '#111',
+                border: '1px solid #2a2a2a',
+                borderRadius: '2px',
+                padding: '10px 14px',
+                color: '#fff',
+                fontSize: '1rem',
+                outline: 'none',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={e => e.target.style.borderColor = '#FFC107'}
+              onBlur={e => e.target.style.borderColor = '#2a2a2a'}
+            />
           </div>
-
-          <div className="login-input-group">
-            <i className="fa-solid fa-lock"></i>
-            <input type="password" className="login-input" placeholder="Secret Pitch Code (Password)" required />
+ 
+          <div>
+            <label style={{
+              display: 'block',
+              color: '#666',
+              fontSize: '0.75rem',
+              letterSpacing: '1px',
+              marginBottom: '6px',
+              textTransform: 'uppercase',
+            }}>
+              Password
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              autoComplete="current-password"
+              required
+              style={{
+                width: '100%',
+                background: '#111',
+                border: '1px solid #2a2a2a',
+                borderRadius: '2px',
+                padding: '10px 14px',
+                color: '#fff',
+                fontSize: '1rem',
+                outline: 'none',
+                transition: 'border-color 0.2s',
+              }}
+              onFocus={e => e.target.style.borderColor = '#FFC107'}
+              onBlur={e => e.target.style.borderColor = '#2a2a2a'}
+            />
           </div>
-
-          <button type="submit" className="tactical-btn glitch-hover" style={{ marginTop: '1rem' }}>
-            <ScrambleText text="BAT ON!" />
+ 
+          {error && (
+            <p style={{
+              color: '#FF4655',
+              fontSize: '0.85rem',
+              letterSpacing: '0.5px',
+              margin: '0',
+            }}>
+              ✕ {error}
+            </p>
+          )}
+ 
+          <button
+            type="submit"
+            disabled={loading}
+            style={{
+              width: '100%',
+              background: loading ? '#aa8500' : '#FFC107',
+              color: '#000',
+              border: 'none',
+              padding: '12px',
+              fontSize: '1rem',
+              fontWeight: '700',
+              letterSpacing: '2px',
+              borderRadius: '2px',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              textTransform: 'uppercase',
+              transition: 'background 0.2s',
+              marginTop: '0.5rem',
+            }}
+          >
+            {loading ? 'VERIFYING...' : 'ENTER →'}
           </button>
+ 
         </form>
-
-        <div style={{ textAlign: 'center', margin: '1.5rem 0' }}>
-          <a href="#reset" className="forgot-link">
-            Lost your Pitch Code? <span>Click Here</span>
-          </a>
-        </div>
       </div>
     </div>
   );
