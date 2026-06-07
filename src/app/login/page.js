@@ -1,11 +1,14 @@
 "use client";
 import { useState } from 'react';
 import Head from 'next/head';
-import Navbar from '../Navbar'; // Keeps your navbar consistent at the top
+import Navbar from '../Navbar';
 
 export default function StaffLogin() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState('');
+
+  // Pull dynamic background path. Falls back to a local path if the env is missing.
+  const bgImage = process.env.NEXT_PUBLIC_LOGIN_BG || '/images/stadium-bg.jpg';
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,7 +26,6 @@ export default function StaffLogin() {
       });
 
       if (res.ok) {
-        // Hard reload redirect to ensure the httpOnly cookie attaches properly
         window.location.href = '/studio'; 
       } else {
         const data = await res.json();
@@ -43,26 +45,60 @@ export default function StaffLogin() {
       flexDirection: 'column', 
       position: 'relative',
       backgroundColor: '#0a0a0c',
-      fontFamily: 'sans-serif'
+      fontFamily: 'sans-serif',
+      overflow: 'hidden'
     }}>
       <Head>
         <title>Staff Entry | Blox Cricket</title>
       </Head>
 
+      {/* INJECTING GLITCH HOVER CSS ANIMATIONS */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes glitch-anim {
+          0% { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg); }
+          20% { clip-path: inset(92% 0 1% 0); transform: skew(-0.5deg); }
+          40% { clip-path: inset(15% 0 80% 0); transform: skew(0.5deg); }
+          60% { clip-path: inset(80% 0 5% 0); transform: skew(-0.3deg); }
+          80% { clip-path: inset(3% 0 92% 0); transform: skew(0.8deg); }
+          100% { clip-path: inset(40% 0 61% 0); transform: skew(0deg); }
+        }
+        .glitch-btn {
+          position: relative;
+          transition: transform 0.1s ease, box-shadow 0.2s ease;
+        }
+        .glitch-btn:hover:not(:disabled) {
+          transform: scale(1.02);
+          box-shadow: 0 0 25px rgba(242, 76, 24, 0.6) !important;
+        }
+        .glitch-btn:hover:not(:disabled)::after {
+          content: 'BAT ON!';
+          position: absolute;
+          top: 0; left: 0; right: 0; bottom: 0;
+          background: linear-gradient(135deg, #ff8c42 0%, #f24c18 100%);
+          text-shadow: -2px 0 #ff00c1, 2px 0 #00fff0;
+          animation: glitch-anim 1s infinite linear alternate-reverse;
+          border-radius: 6px;
+          display: flex;
+          alignItems: center;
+          justifyContent: center;
+          padding-top: 1px;
+        }
+      `}} />
+
       {/* 1. FIXED TOP NAVBAR */}
       <Navbar homepage={{}} />
 
-      {/* 2. FULL VIEWPORT CRICKET BACKGROUND */}
+      {/* 2. DYNAMIC ENVIRONMENT-DRIVEN BACKGROUND IMAGE */}
       <div style={{
         position: 'fixed',
         inset: 0,
-        backgroundImage: "url('/images/stadium-bg.jpg')", // Ensure your stadium image path matches your public folder
+        backgroundImage: `url('${bgImage}')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         zIndex: 0
       }} />
 
-      {/* DARK SHIELD OVERLAY */}
+      {/* DARK OVERLAY BLENDER */}
       <div style={{
         position: 'fixed',
         inset: 0,
@@ -70,7 +106,7 @@ export default function StaffLogin() {
         zIndex: 1
       }} />
 
-      {/* 3. PERFECTLY CENTERED CARD WRAPPER */}
+      {/* 3. CENTERED INTERFACE BOX */}
       <div style={{
         flex: 1,
         display: 'flex',
@@ -79,10 +115,9 @@ export default function StaffLogin() {
         position: 'relative',
         zIndex: 2,
         padding: '20px',
-        marginTop: '60px' // Leaves space so it doesn't collide with the fixed Navbar
+        marginTop: '60px'
       }}>
         
-        {/* THE STAFF ENTRY CONTAINER */}
         <div style={{
           width: '100%',
           maxWidth: '460px',
@@ -95,7 +130,6 @@ export default function StaffLogin() {
           boxShadow: '0 20px 40px rgba(0, 0, 0, 0.5)'
         }}>
           
-          {/* HEADER HEADER */}
           <div style={{ textAlign: 'center', marginBottom: '30px' }}>
             <h1 style={{
               fontSize: '3.2rem',
@@ -136,11 +170,9 @@ export default function StaffLogin() {
             )}
           </div>
 
-          {/* CREDENTIALS FORM */}
           <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             
-            {/* USERNAME FIELD */}
-            <div style={{ position: 'relative' }}>
+            <div>
               <input
                 name="username"
                 type="text"
@@ -156,14 +188,12 @@ export default function StaffLogin() {
                   borderRadius: '6px',
                   color: '#ffffff',
                   fontSize: '0.95rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s'
+                  outline: 'none'
                 }}
               />
             </div>
 
-            {/* PASSWORD FIELD */}
-            <div style={{ position: 'relative' }}>
+            <div>
               <input
                 name="password"
                 type="password"
@@ -178,16 +208,16 @@ export default function StaffLogin() {
                   borderRadius: '6px',
                   color: '#ffffff',
                   fontSize: '0.95rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s'
+                  outline: 'none'
                 }}
               />
             </div>
 
-            {/* ACTION BUTTON */}
+            {/* ACTION GLITCH BUTTON */}
             <button
               type="submit"
               disabled={isAuthenticating}
+              className="glitch-btn"
               style={{
                 marginTop: '10px',
                 padding: '14px',
@@ -202,8 +232,7 @@ export default function StaffLogin() {
                 letterSpacing: '1px',
                 cursor: isAuthenticating ? 'not-allowed' : 'pointer',
                 opacity: isAuthenticating ? 0.75 : 1,
-                boxShadow: '0 4px 15px rgba(242, 76, 24, 0.3)',
-                transition: 'transform 0.1s, box-shadow 0.2s'
+                boxShadow: '0 4px 15px rgba(242, 76, 24, 0.3)'
               }}
             >
               {isAuthenticating ? "ENCRYPTING CONNECTION..." : "BAT ON!"}
