@@ -7,15 +7,14 @@ export const revalidate = 0;
 import RevealOnScroll from './RevealOnScroll';
 import HeroTypewriter from './HeroTypewriter';
 import MediaGalleryPopup from './MediaGalleryPopup';
-import FireflyBackground from './FireflyBackground';
 import Preloader from './Preloader';
 import MagneticButton from './MagneticButton';
 import CursorTrail from './CursorTrail';
 import TiltWrapper from './TiltWrapper';     
 import ScrambleText from './ScrambleText';   
-import DynamicBackground from './DynamicBackground';
 import LagCursor from './LagCursor';
 import AboutGameClient from './AboutGameClient';
+import ScrollBackgroundSequence from './ScrollBackgroundSequence';
 
 const builder = imageUrlBuilder(client);
 function urlFor(source) {
@@ -24,8 +23,8 @@ function urlFor(source) {
 
 export default async function Home() {
   
-  // Clean, parallel data fetching
-  const [updates, homepage, mediaItems, gameFacts] = await Promise.all([
+  // Clean, parallel data fetching (Fully Untangled)
+  const [updates, homepage, mediaItems, gameFacts, bgSettings] = await Promise.all([
     client.fetch(`*[_type == "gameUpdate"] | order(date desc)`),
     client.fetch(`*[_type == "homepage"][0]{
       ..., 
@@ -46,7 +45,13 @@ export default async function Home() {
       _id, title, category, type, duration, date,
       "thumbUrl": thumb.asset->url
     }`),
-    client.fetch(`*[_type == "gameFact"] { factText }`)
+    client.fetch(`*[_type == "gameFact"] { factText }`),
+    client.fetch(`*[_type == "backgroundSettings"][0]{
+      homeSequence[]{
+        videoUrl,
+        "imageUrl": image.asset->url
+      }
+    }`)
   ]);
 
   return (
@@ -61,20 +66,8 @@ export default async function Home() {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
       </Head>
 
-      {homepage?.bgVideoUrl ? (
-        <video 
-          autoPlay muted loop playsInline 
-          style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', objectFit: 'cover', zIndex: -2, background: '#0a0a0a' }}
-        >
-          <source src={homepage.bgVideoUrl} type="video/mp4" />
-        </video>
-      ) : (
-        homepage?.bgImage && (
-          <div style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100vh', backgroundImage: `url(${urlFor(homepage.bgImage).url()})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', zIndex: -2, background: '#0a0a0a' }}></div>
-        )
-      )}
-
-      <DynamicBackground />
+      {/* ── THE NEW SCROLLING SEQUENCE BACKGROUND ── */}
+      <ScrollBackgroundSequence sequence={bgSettings?.homeSequence} />
 
       <nav className="navbar">
         <div className="glitch-hover" style={{ display: 'inline-block', cursor: 'pointer' }}>
@@ -95,26 +88,24 @@ export default async function Home() {
         </ul>
         
         <div className="profile-menu">
-  <a href="/login" className="glitch-hover" style={{ textDecoration: 'none', color: 'var(--text-main)', padding: '8px 15px', fontWeight: 'bold', letterSpacing: '1px' }}>
-    LOGIN
-  </a>
-</div>
+          <a href="/login" className="glitch-hover" data-text="LOGIN" style={{ textDecoration: 'none', color: 'var(--text-main)', padding: '8px 15px', fontWeight: 'bold', letterSpacing: '1px' }}>
+            LOGIN
+          </a>
+        </div>
       </nav>
 
       <main className="dashboard-container">
         
-        <FireflyBackground />
-
         {/* ── HERO ── */}
         <section className="hero-section">
           <div className="main-content">
             <HeroTypewriter title={homepage?.heroTitle} />
-            <p className="hero-lines glitch-hover">
+            <p className="hero-lines glitch-hover" data-text={homepage?.heroText || 'Step onto the pitch and experience the ultimate T20 multiplayer cricket showdown.'}>
               <ScrambleText text={homepage?.heroText || 'Step onto the pitch and experience the ultimate T20 multiplayer cricket showdown.'} />
             </p>
           </div>
           <div className="info-box">
-            <p className="box-lines glitch-hover">
+            <p className="box-lines glitch-hover" data-text={`"${homepage?.infoQuote || 'The most immersive cricket experience on the platform.'}"`}>
               "<ScrambleText text={homepage?.infoQuote || 'The most immersive cricket experience on the platform.'} />"
             </p>
           </div>
@@ -138,68 +129,65 @@ export default async function Home() {
 
             <div className="devs-right-panel">
               <div className="devs-right-panel" style={{ width: '100%' }}>
-              {/* --- UPDATED: SEE DEVs InlineExpand --- */}
-              <InlineExpand 
-                buttonTextOpen="SEE DEVs →" 
-                buttonTextClose="← HIDE DEVs"
-                className="glitch-hover"
-                data-text="SEE DEVs →"
-                buttonStyle={{ 
-                  background: 'transparent', border: '1px solid var(--text-main)', 
-                  color: 'var(--text-main)', padding: '12px 30px', fontSize: '1rem',
-                  fontWeight: 'bold', letterSpacing: '1px', borderRadius: '4px', cursor: 'pointer' 
-                }}
-              >
-                {/* CSS GRID: Automatically creates columns based on the number of devs */}
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
-                  gap: '2rem', 
-                  marginTop: '2.5rem',
-                  width: '100%'
-                }}>
-                  
-                  {/* DYNAMIC MAPPING */}
-                  {homepage?.developers?.map((dev, index) => (
-                    <div key={index} className="hacker-profile-card" style={{ maxWidth: '100%', margin: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
-                        <i className="fa-regular fa-user" style={{ color: '#39FF14', fontSize: '1.5rem' }}></i>
-                        <h3 style={{ margin: 0, fontSize: '1.2rem', letterSpacing: '1px', fontFamily: 'Inter, sans-serif' }}>ABOUT DEV</h3>
-                      </div>
-                      
-                      <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
-                        {dev.bio || 'No bio provided.'}
-                      </p>
-                      
-                      <div className="dev-skills-row">
-                        {dev.skills?.length > 0 ? (
-                          dev.skills.map((skill, sIdx) => (
-                            <div key={sIdx} className="skill-tag">
-                              <i className="fa-solid fa-code"></i> {skill}
-                            </div>
-                          ))
-                        ) : (
-                          <div className="skill-tag"><i className="fa-solid fa-code"></i> Code</div>
-                        )}
-                      </div>
-                      
-                      <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.05)', margin: '2.5rem 0' }} />
-                      <div className="dev-avatar-ring"><i className="fa-solid fa-code"></i></div>
-                      
-                      <div style={{ textAlign: 'center' }}>
-                        <h2 style={{ fontSize: '2.2rem', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'Teko, sans-serif', letterSpacing: '2px' }}>
-                          {dev.name || 'UNKNOWN'} <i className="fa-solid fa-certificate verified-badge"></i>
-                        </h2>
-                        <p style={{ color: '#888', margin: '5px 0 20px 0', fontSize: '0.95rem' }}>
-                          {dev.role || 'Developer'}
+                <InlineExpand 
+                  buttonTextOpen="SEE DEVs →" 
+                  buttonTextClose="← HIDE DEVs"
+                  className="glitch-hover"
+                  data-text="SEE DEVs →"
+                  buttonStyle={{ 
+                    background: 'transparent', border: '1px solid var(--text-main)', 
+                    color: 'var(--text-main)', padding: '12px 30px', fontSize: '1rem',
+                    fontWeight: 'bold', letterSpacing: '1px', borderRadius: '4px', cursor: 'pointer' 
+                  }}
+                >
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+                    gap: '2rem', 
+                    marginTop: '2.5rem',
+                    width: '100%'
+                  }}>
+                    
+                    {homepage?.developers?.map((dev, index) => (
+                      <div key={index} className="hacker-profile-card" style={{ maxWidth: '100%', margin: 0 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
+                          <i className="fa-regular fa-user" style={{ color: '#39FF14', fontSize: '1.5rem' }}></i>
+                          <h3 style={{ margin: 0, fontSize: '1.2rem', letterSpacing: '1px', fontFamily: 'Inter, sans-serif' }}>ABOUT DEV</h3>
+                        </div>
+                        
+                        <p style={{ color: '#aaa', fontSize: '0.95rem', lineHeight: '1.6', marginBottom: '1.5rem' }}>
+                          {dev.bio || 'No bio provided.'}
                         </p>
+                        
+                        <div className="dev-skills-row">
+                          {dev.skills?.length > 0 ? (
+                            dev.skills.map((skill, sIdx) => (
+                              <div key={sIdx} className="skill-tag">
+                                <i className="fa-solid fa-code"></i> {skill}
+                              </div>
+                            ))
+                          ) : (
+                            <div className="skill-tag"><i className="fa-solid fa-code"></i> Code</div>
+                          )}
+                        </div>
+                        
+                        <hr style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.05)', margin: '2.5rem 0' }} />
+                        <div className="dev-avatar-ring"><i className="fa-solid fa-code"></i></div>
+                        
+                        <div style={{ textAlign: 'center' }}>
+                          <h2 style={{ fontSize: '2.2rem', margin: '0', display: 'flex', justifyContent: 'center', alignItems: 'center', fontFamily: 'Teko, sans-serif', letterSpacing: '2px' }}>
+                            {dev.name || 'UNKNOWN'} <i className="fa-solid fa-certificate verified-badge"></i>
+                          </h2>
+                          <p style={{ color: '#888', margin: '5px 0 20px 0', fontSize: '0.95rem' }}>
+                            {dev.role || 'Developer'}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
 
-                </div>
-              </InlineExpand>
-            </div>
+                  </div>
+                </InlineExpand>
+              </div>
             </div>
 
           </div>
@@ -214,16 +202,16 @@ export default async function Home() {
         {/* ── 3. MEDIA SECTION ── */}
         <RevealOnScroll id="media" className="content-section">
           <TiltWrapper 
-  className="glass-container" 
-  style={{ 
-    padding: '3rem',
-    background: 'rgba(20, 24, 28, 0.45)', /* 45% opaque dark background */
-    backdropFilter: 'blur(12px)',         /* The frosted glass blur */
-    WebkitBackdropFilter: 'blur(12px)',   /* Required for Safari support */
-    border: '1px solid rgba(255, 255, 255, 0.08)', /* Subtle reflective edge */
-    borderRadius: '12px' 
-  }}
->
+            className="glass-container" 
+            style={{ 
+              padding: '3rem',
+              background: 'rgba(20, 24, 28, 0.45)',
+              backdropFilter: 'blur(12px)',        
+              WebkitBackdropFilter: 'blur(12px)',  
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '12px' 
+            }}
+          >
             <h2 style={{ fontSize: '4rem', textTransform: 'uppercase', marginBottom: '10px' }}>
               <ScrambleText text="Game Pic's / Video" />
             </h2>
