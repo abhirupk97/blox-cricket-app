@@ -40,6 +40,8 @@ export default function AboutGameClient({ homepage, mediaUrl }) {
           </p>
 
           <button
+            className="glitch-hover" 
+  data-text="SEE FEATURES →"
             onClick={() => setIsOpen(!isOpen)}
             style={{
               background: 'transparent',

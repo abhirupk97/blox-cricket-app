@@ -9,7 +9,6 @@ export default function GameLeaks({ leaksData = [] }) {
 
   useEffect(() => { setMounted(true); }, []);
 
-  // Use leaksData passed from page.js, or fallback to empty array
   const LATEST_LEAKS = leaksData.slice(0, 2);
   const ARCHIVED_LEAKS = leaksData.slice(2);
 
@@ -17,13 +16,11 @@ export default function GameLeaks({ leaksData = [] }) {
     <>
       <RevealOnScroll className="leaks-section-container">
         
-        {/* The Header */}
         <div className="leaks-header-wrapper">
           <h2 className="leaks-header-title">GAME LEAKS</h2>
           <div className="leaks-header-line"></div>
         </div>
 
-        {/* The Grid */}
         <div className="leaks-grid">
           {LATEST_LEAKS.map((leak) => (
             <div key={leak._id} className="leak-card">
@@ -34,10 +31,12 @@ export default function GameLeaks({ leaksData = [] }) {
           ))}
         </div>
 
-        {/* "More Leaks" Trigger Button */}
+        {/* --- UPDATED: "More Leaks" Trigger Button --- */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2rem' }}>
           <button 
             onClick={() => setIsOpen(true)}
+            className="glitch-hover" 
+            data-text="MORE LEAKS →"
             style={{
               background: 'var(--neon-green)',
               color: '#000',

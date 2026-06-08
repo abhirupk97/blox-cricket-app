@@ -138,13 +138,16 @@ export default async function Home() {
 
             <div className="devs-right-panel">
               <div className="devs-right-panel" style={{ width: '100%' }}>
+              {/* --- UPDATED: SEE DEVs InlineExpand --- */}
               <InlineExpand 
                 buttonTextOpen="SEE DEVs →" 
                 buttonTextClose="← HIDE DEVs"
+                className="glitch-hover"
+                data-text="SEE DEVs →"
                 buttonStyle={{ 
                   background: 'transparent', border: '1px solid var(--text-main)', 
                   color: 'var(--text-main)', padding: '12px 30px', fontSize: '1rem',
-                  fontWeight: 'bold', letterSpacing: '1px', borderRadius: '4px', cursor: 'none'
+                  fontWeight: 'bold', letterSpacing: '1px', borderRadius: '4px', cursor: 'pointer' 
                 }}
               >
                 {/* CSS GRID: Automatically creates columns based on the number of devs */}

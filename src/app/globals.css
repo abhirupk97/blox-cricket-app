@@ -1163,3 +1163,42 @@ p.glitch-hover, li.glitch-hover, div.glitch-hover { display: block; }
   text-decoration: underline;
   text-shadow: 0 0 8px rgba(255, 193, 7, 0.4);
 }
+/* --- UNIVERSAL GLITCH HOVER EFFECT --- */
+@keyframes universal-glitch {
+  0% { clip-path: inset(40% 0 61% 0); transform: skew(0.3deg); }
+  20% { clip-path: inset(92% 0 1% 0); transform: skew(-0.5deg); }
+  40% { clip-path: inset(15% 0 80% 0); transform: skew(0.5deg); }
+  60% { clip-path: inset(80% 0 5% 0); transform: skew(-0.3deg); }
+  80% { clip-path: inset(3% 0 92% 0); transform: skew(0.8deg); }
+  100% { clip-path: inset(40% 0 61% 0); transform: skew(0deg); }
+}
+
+.glitch-hover {
+  position: relative;
+  transition: transform 0.1s ease;
+}
+
+.glitch-hover:hover {
+  transform: scale(1.02);
+}
+
+/* The glitch layer that appears on hover */
+.glitch-hover::after {
+  content: attr(data-text); /* Dynamically grabs the text from the button */
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: #0a0a0c; /* Dark background to cover the original button */
+  color: #ffffff; /* White text for the glitch */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: -2px 0 #ff00c1, 2px 0 #00fff0; /* Cyan and Magenta 3D effect */
+  animation: universal-glitch 1s infinite linear alternate-reverse;
+  opacity: 0;
+  pointer-events: none;
+  border-radius: inherit; /* Perfectly matches the rounded corners of whatever button it is on */
+}
+
+.glitch-hover:hover::after {
+  opacity: 1;
+}
